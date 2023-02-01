@@ -27,5 +27,5 @@ val appModule = module {
 
 val applicationModules =
     listOf(
-        appModule, securityModule
+        appModule, networkServiceModule
     )
