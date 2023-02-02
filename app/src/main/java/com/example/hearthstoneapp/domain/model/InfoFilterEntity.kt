@@ -22,7 +22,7 @@ data class InfoFilterEntity(
     @SerializedName("races")
     val races: List<String>? = null,
     @SerializedName("locales")
-    val locales: Locales? = null
+    val locales: List<String>? = null
 )
 
 data class Locales(
