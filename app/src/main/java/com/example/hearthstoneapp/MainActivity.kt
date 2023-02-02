@@ -19,6 +19,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -41,7 +45,7 @@ class MainActivity : ComponentActivity() {
             HearthStoneAppTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = Color(R.color.cultured)
+                    color = colorResource(id = R.color.cultured)
                 ) {
                     InfoHelper.getInstance().setInfoResultValue()
                     MainScreen()
@@ -66,20 +70,23 @@ fun CustomHomeView() {
 @Composable
 private fun CustomDivider() {
     Text(
-        "Hearthstone",
-        color = Color(R.color.dark_gunmetal),
+        text = stringResource(id = R.string.title_home),
+        color = colorResource(id = R.color.dark_gunmetal),
         fontSize = 40.sp,
         modifier = Modifier.padding(
             start = 37.dp,
             top = 90.dp,
             bottom = 8.dp,
             end = 113.dp
-        )
+        ),
+        fontFamily = FontFamily(Font(R.font.avenir_black))
     )
     Divider(
         startIndent = 39.dp,
         thickness = 0.5.dp,
-        color = Color(R.color.white)
+        color = colorResource(
+            id = R.color.white
+        )
     )
 }
 
@@ -158,7 +165,8 @@ private fun CustomHorizontalList(
                             ),
                         color = Color(R.color.dark_silver),
                         fontSize = 24.sp,
-                        text = key
+                        text = key,
+                        fontFamily = FontFamily(Font(R.font.avenir_book))
                     )
                 }
 
@@ -199,9 +207,10 @@ fun HorizontalCard(
                 Modifier.padding(top = 65.dp, start = 23.dp)
             ) {
                 Text(
+                    fontFamily = FontFamily(Font(R.font.avenir_book)),
                     text = it.toString(),
                     modifier = Modifier.padding(4.dp),
-                    color = Color(R.color.white),
+                    color = Color.White,
                     textAlign = TextAlign.Left
                 )
             }

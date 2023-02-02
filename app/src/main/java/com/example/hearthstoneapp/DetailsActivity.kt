@@ -19,12 +19,14 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
@@ -45,7 +47,7 @@ class DetailsActivity : ComponentActivity() {
             HearthStoneAppTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = Color(R.color.cultured)
+                    color = colorResource(id = R.color.cultured)
                 ) {
                     MainScreen()
                     CustomTitle(emptyList())
@@ -94,12 +96,13 @@ fun CustomTitle(charByRaceList: List<CardByFilterEntity>) {
         CustomButton()
         Text(
             InfoHelper.getInstance().itemKeySelected,
-            color = Color(R.color.dark_gunmetal),
+            color = colorResource(id = R.color.dark_gunmetal),
             fontSize = 22.sp,
             modifier = Modifier.padding(
                 start = 280.dp,
                 bottom = 8.dp,
-            )
+            ),
+            fontFamily = FontFamily(Font(R.font.avenir_book))
         )
         LazyVerticalGrid(
             cells = GridCells.Fixed(2)
@@ -150,7 +153,7 @@ fun CustomButton() {
         Modifier
             .padding(top = 64.dp, start = 24.dp)
             .size(80.dp),
-        backgroundColor = Color(R.color.dark_gunmetal),
+        backgroundColor = colorResource(id = R.color.dark_gunmetal),
     ) {
         Image(
             painter = painterResource(id = R.drawable.ic_button_back),
