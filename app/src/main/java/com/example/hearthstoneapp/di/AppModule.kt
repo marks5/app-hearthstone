@@ -2,26 +2,28 @@ package com.example.hearthstoneapp.di
 
 import com.example.hearthstoneapp.presentation.viewmodel.CharViewModel
 import com.example.hearthstoneapp.data.*
-import com.example.hearthstoneapp.data.datasource.CharDataSource
-import com.example.hearthstoneapp.data.datasource.CharDataSourceImp
-import com.example.hearthstoneapp.data.repository.CharDataRepository
-import com.example.hearthstoneapp.data.repository.CharDataRepositoryImp
-import com.example.hearthstoneapp.domain.useCase.CharDataUseCase
-import com.example.hearthstoneapp.domain.useCase.CharDataUseCaseImp
+import com.example.hearthstoneapp.data.datasource.CardDataSource
+import com.example.hearthstoneapp.data.datasource.CardDataSourceImp
+import com.example.hearthstoneapp.data.repository.CardDataRepository
+import com.example.hearthstoneapp.data.repository.CardDataRepositoryImp
+import com.example.hearthstoneapp.domain.useCase.CardDataUseCase
+import com.example.hearthstoneapp.domain.useCase.CardDataUseCaseImp
+import com.example.hearthstoneapp.presentation.viewmodel.DetailsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 
 
 val appModule = module {
-    factory<CharDataSource> { CharDataSourceImp(service = get()) }
-    factory<CharDataRepository> { CharDataRepositoryImp(dataSource = get()) }
-    factory<CharDataUseCase> { CharDataUseCaseImp(repository = get()) }
+    factory<CardDataSource> { CardDataSourceImp(service = get()) }
+    factory<CardDataRepository> { CardDataRepositoryImp(dataSource = get()) }
+    factory<CardDataUseCase> { CardDataUseCaseImp(repository = get()) }
     viewModel { CharViewModel(useCase = get()) }
+    viewModel { DetailsViewModel(useCase = get()) }
 
-    factory<CharService> {
+    factory<CardService> {
         get<Retrofit>()
-            .create(CharService::class.java)
+            .create(CardService::class.java)
     }
 }
 
