@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">HearthStoneApp</string>
+    <string name="accessibility_fab">Floating action button</string>
+    <string name="accessibility_item_image">"Item list image"</string>
 </resources>

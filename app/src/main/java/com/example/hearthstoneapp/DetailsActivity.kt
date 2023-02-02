@@ -24,11 +24,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
-import coil.compose.rememberAsyncImagePainter
 import com.example.InfoHelper
 import com.example.hearthstoneapp.domain.model.CardByFilterEntity
 import com.example.hearthstoneapp.presentation.ui.theme.HearthStoneAppTheme
@@ -45,7 +45,7 @@ class DetailsActivity : ComponentActivity() {
             HearthStoneAppTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = Color(0xFFF8F8F8)
+                    color = Color(R.color.cultured)
                 ) {
                     MainScreen()
                     CustomTitle(emptyList())
@@ -94,12 +94,12 @@ fun CustomTitle(charByRaceList: List<CardByFilterEntity>) {
         CustomButton()
         Text(
             InfoHelper.getInstance().itemKeySelected,
-            color = Color(0xFF202032),
+            color = Color(R.color.dark_gunmetal),
             fontSize = 22.sp,
             modifier = Modifier.padding(
                 start = 280.dp,
                 bottom = 8.dp,
-            ),
+            )
         )
         LazyVerticalGrid(
             cells = GridCells.Fixed(2)
@@ -126,7 +126,6 @@ fun CustomTitle(charByRaceList: List<CardByFilterEntity>) {
                 items(10) {
                     Image(
                         painter = painterResource(id = R.drawable.placeholder),
-                        contentDescription = null,
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(
@@ -134,7 +133,8 @@ fun CustomTitle(charByRaceList: List<CardByFilterEntity>) {
                                 bottom = 8.dp,
                                 start = 8.dp
                             ),
-                        contentScale = ContentScale.Fit
+                        contentScale = ContentScale.Fit,
+                        contentDescription = stringResource(id = R.string.accessibility_item_image),
                     )
                 }
             }
@@ -148,13 +148,13 @@ fun CustomButton() {
     FloatingActionButton(
         onClick = { onBackPressed(mContext) },
         Modifier
-            .padding(top = 91.dp, start = 24.dp)
+            .padding(top = 64.dp, start = 24.dp)
             .size(80.dp),
-        backgroundColor = Color(0xFF202032),
+        backgroundColor = Color(R.color.dark_gunmetal),
     ) {
         Image(
             painter = painterResource(id = R.drawable.ic_button_back),
-            contentDescription = "fab",
+            contentDescription = stringResource(id = R.string.accessibility_fab),
         )
     }
 }

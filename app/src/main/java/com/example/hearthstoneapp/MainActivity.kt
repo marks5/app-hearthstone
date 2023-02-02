@@ -41,7 +41,7 @@ class MainActivity : ComponentActivity() {
             HearthStoneAppTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = Color(0xFFF8F8F8)
+                    color = Color(R.color.cultured)
                 ) {
                     InfoHelper.getInstance().setInfoResultValue()
                     MainScreen()
@@ -67,7 +67,7 @@ fun CustomHomeView() {
 private fun CustomDivider() {
     Text(
         "Hearthstone",
-        color = Color(0xFF202032),
+        color = Color(R.color.dark_gunmetal),
         fontSize = 40.sp,
         modifier = Modifier.padding(
             start = 37.dp,
@@ -79,7 +79,7 @@ private fun CustomDivider() {
     Divider(
         startIndent = 39.dp,
         thickness = 0.5.dp,
-        color = Color(0xFFFFFFFF)
+        color = Color(R.color.white)
     )
 }
 
@@ -156,7 +156,7 @@ private fun CustomHorizontalList(
                                 top = 34.dp,
                                 start = 39.dp,
                             ),
-                        color = Color(0xFF707070),
+                        color = Color(R.color.dark_silver),
                         fontSize = 24.sp,
                         text = key
                     )
@@ -201,13 +201,12 @@ fun HorizontalCard(
                 Text(
                     text = it.toString(),
                     modifier = Modifier.padding(4.dp),
-                    color = Color(0xFFFFFFFF),
+                    color = Color(R.color.white),
                     textAlign = TextAlign.Left
                 )
             }
         }
     }
-
 }
 
 fun goToDetails(mContext: Context, itemSelected: String, key: String) {
