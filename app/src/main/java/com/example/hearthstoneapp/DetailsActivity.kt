@@ -1,38 +1,24 @@
 package com.example.hearthstoneapp
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.GridCells
-import androidx.compose.foundation.lazy.LazyVerticalGrid
-import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.InfoHelper
 import com.example.hearthstoneapp.domain.model.CardByFilterEntity
+import com.example.hearthstoneapp.presentation.ui.components.CustomFabButton
+import com.example.hearthstoneapp.presentation.ui.components.CustomText
+import com.example.hearthstoneapp.presentation.ui.components.customVerticalList
 import com.example.hearthstoneapp.presentation.ui.theme.HearthStoneAppTheme
 import com.example.hearthstoneapp.presentation.viewmodel.DetailsUiState
 import com.example.hearthstoneapp.presentation.viewmodel.DetailsViewModel
@@ -50,7 +36,6 @@ class DetailsActivity : ComponentActivity() {
                     color = colorResource(id = R.color.cultured)
                 ) {
                     MainScreen()
-                    CustomTitle(emptyList())
                 }
             }
         }
@@ -86,83 +71,19 @@ private fun MainScreen(viewModel: DetailsViewModel = get()) {
             }
         }
     }
-}
-
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-fun CustomTitle(charByRaceList: List<CardByFilterEntity>) {
 
     Column {
-        CustomButton()
-        Text(
-            InfoHelper.getInstance().itemKeySelected,
-            color = colorResource(id = R.color.dark_gunmetal),
-            fontSize = 22.sp,
-            modifier = Modifier.padding(
-                start = 280.dp,
-                bottom = 8.dp,
-            ),
-            fontFamily = FontFamily(Font(R.font.avenir_book))
+        CustomFabButton(
+            backgroundColor = R.color.dark_gunmetal,
+            intentClass = MainActivity::class.java,
+            context = LocalContext.current,
+            drawable = R.drawable.ic_button_back
         )
-        LazyVerticalGrid(
-            cells = GridCells.Fixed(2)
-        ) {
-
-            val list = listOf(1..10)
-//            charByRaceList.map {
-//                item {
-//                    Image(
-//                        painter = rememberAsyncImagePainter(it.img),
-//                        contentDescription = null,
-//                        modifier = Modifier
-//                            .fillMaxSize()
-//                            .padding(
-//                                top = 8.dp,
-//                                end = 8.dp
-//                            ),
-//                        contentScale = ContentScale.Fit
-//                    )
-//                }
-//            }
-
-            list.map {
-                items(10) {
-                    Image(
-                        painter = painterResource(id = R.drawable.placeholder),
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(
-                                top = 8.dp,
-                                bottom = 8.dp,
-                                start = 8.dp
-                            ),
-                        contentScale = ContentScale.Fit,
-                        contentDescription = stringResource(id = R.string.accessibility_item_image),
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun CustomButton() {
-    val mContext = LocalContext.current
-    FloatingActionButton(
-        onClick = { onBackPressed(mContext) },
-        Modifier
-            .padding(top = 64.dp, start = 24.dp)
-            .size(80.dp),
-        backgroundColor = colorResource(id = R.color.dark_gunmetal),
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.ic_button_back),
-            contentDescription = stringResource(id = R.string.accessibility_fab),
+        CustomText(
+            text = InfoHelper.getInstance().itemKeySelected,
+            colorBackground = R.color.dark_gunmetal,
+            R.font.avenir_book
         )
+        customVerticalList(emptyList())
     }
-}
-
-fun onBackPressed(mContext: Context) {
-    mContext.startActivity(Intent(mContext, MainActivity::class.java))
-    InfoHelper.getInstance().setItemClicked("")
 }
