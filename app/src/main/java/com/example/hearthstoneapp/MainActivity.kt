@@ -1,17 +1,14 @@
 package com.example.hearthstoneapp
 
 import android.content.Context
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -23,12 +20,12 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.InfoHelper
+import com.example.hearthstoneapp.presentation.ui.components.*
 import com.example.hearthstoneapp.presentation.ui.theme.HearthStoneAppTheme
 import com.example.hearthstoneapp.presentation.viewmodel.CharViewModel
 import com.example.hearthstoneapp.presentation.viewmodel.InfoUiState
@@ -69,18 +66,19 @@ fun CustomHomeView() {
 
 @Composable
 private fun CustomDivider() {
-    Text(
+    CustomText(
         text = stringResource(id = R.string.title_home),
-        color = colorResource(id = R.color.dark_gunmetal),
-        fontSize = 40.sp,
+        colorBackground = R.color.dark_gunmetal,
+        fontFamily = R.font.avenir_black,
+        fontSizeText = 40.sp,
         modifier = Modifier.padding(
             start = 37.dp,
             top = 90.dp,
             bottom = 8.dp,
             end = 113.dp
-        ),
-        fontFamily = FontFamily(Font(R.font.avenir_black))
+        )
     )
+
     Divider(
         startIndent = 39.dp,
         thickness = 0.5.dp,
@@ -149,83 +147,11 @@ fun CircularProgressIndicatorSample(isLoading: Boolean) {
 private fun CustomHorizontalList(
     classes: Map<String, List<String>>
 ) {
-    LazyColumn(
-        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp),
-        verticalArrangement = Arrangement.SpaceEvenly,
-        modifier = Modifier
-            .fillMaxHeight(),
-        content = {
-            classes.forEach { (key, values) ->
-                item {
-                    Text(
-                        modifier = Modifier
-                            .padding(
-                                top = 34.dp,
-                                start = 39.dp,
-                            ),
-                        color = Color(R.color.dark_silver),
-                        fontSize = 24.sp,
-                        text = key,
-                        fontFamily = FontFamily(Font(R.font.avenir_book))
-                    )
-                }
-
-                item {
-                    LazyRow(
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        content = {
-                            item {
-                                HorizontalCard(values, key)
-                            }
-                        }
-                    )
-                }
-            }
-        }
-    )
-}
-
-@Composable
-fun HorizontalCard(
-    list: List<Any>,
-    Key: String
-) {
-    val mContext = LocalContext.current
-
-    list.map {
-        Card(
-            modifier = Modifier
-                .padding(start = 16.dp, top = 10.dp)
-                .width(144.dp)
-                .height(104.dp)
-                .clickable { goToDetails(mContext, it.toString(), Key) },
-            shape = RoundedCornerShape(16.dp),
-            backgroundColor = randomColor()
-        )
-        {
-            Column(
-                Modifier.padding(top = 65.dp, start = 23.dp)
-            ) {
-                Text(
-                    fontFamily = FontFamily(Font(R.font.avenir_book)),
-                    text = it.toString(),
-                    modifier = Modifier.padding(4.dp),
-                    color = Color.White,
-                    textAlign = TextAlign.Left
-                )
-            }
-        }
-    }
+    CustomVerticalList(classes)
 }
 
 fun goToDetails(mContext: Context, itemSelected: String, key: String) {
-    mContext.startActivity(Intent(mContext, DetailsActivity::class.java))
+    goTo(mContext, DetailsActivity::class.java)
     InfoHelper.getInstance().setItemClicked(itemSelected)
     InfoHelper.getInstance().setItemKeyClicked(key)
 }
-
-private fun randomColor() = Color(
-    Random.nextInt(255),
-    Random.nextInt(255),
-    Random.nextInt(255)
-)

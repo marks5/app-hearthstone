@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -12,6 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.InfoHelper
@@ -82,7 +85,12 @@ private fun MainScreen(viewModel: DetailsViewModel = get()) {
         CustomText(
             text = InfoHelper.getInstance().itemKeySelected,
             colorBackground = R.color.dark_gunmetal,
-            R.font.avenir_book
+            fontFamily = R.font.avenir_book,
+            fontSizeText = 22.sp,
+            modifier = Modifier.padding(
+                start = 280.dp,
+                bottom = 8.dp,
+            )
         )
         customVerticalList(emptyList())
     }
