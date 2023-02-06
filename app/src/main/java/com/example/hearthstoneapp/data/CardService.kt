@@ -13,7 +13,7 @@ interface CardService {
     @GET("cards/races/{raceName}")
     suspend fun fetchRacesFiltersData(@Path("raceName") raceName: String): List<CardByFilterEntity>
 
-    @GET("cards/races/{className}")
+    @GET("cards/classes/{className}")
     suspend fun fetchClassesFiltersData(@Path("className") className: String): List<CardByFilterEntity>
 
     @GET("cards/qualities/{qualityName}")

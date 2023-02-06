@@ -50,7 +50,7 @@ fun CustomHorizontalCard(
     }
 }
 
-private fun randomColor() = Color(
+fun randomColor() = Color(
     Random.nextInt(255),
     Random.nextInt(255),
     Random.nextInt(255)

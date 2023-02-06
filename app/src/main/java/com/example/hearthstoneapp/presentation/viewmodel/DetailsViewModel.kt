@@ -2,6 +2,7 @@ package com.example.hearthstoneapp.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.InfoHelper
 import com.example.hearthstoneapp.domain.model.CardByFilterEntity
 import com.example.hearthstoneapp.domain.useCase.CardDataUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,10 +21,110 @@ class DetailsViewModel(private val useCase: CardDataUseCase) : ViewModel() {
     private val _uiStateError = MutableStateFlow(DetailsUiState.Error(Throwable()))
     val uiStateError: StateFlow<DetailsUiState> = _uiStateError
 
-    fun getRaceList(raceName: String) {
+
+    fun getFilterName() {
+        when (InfoHelper.getInstance().getItemKeyClicked()) {
+            FiltersName.CLASSES.valueType -> {
+                getClassesList()
+            }
+            FiltersName.RACES.valueType -> {
+                getRacesList()
+            }
+            FiltersName.TYPES.valueType -> {
+                getTypesList()
+            }
+            FiltersName.FACTIONS.valueType -> {
+                getFactionsList()
+            }
+            FiltersName.SETS.valueType -> {
+                getSetsList()
+            }
+            FiltersName.QUALITY.valueType -> {
+                getQualityList()
+            }
+        }
+    }
+
+    private fun getRacesList() {
         viewModelScope.launch {
             _uiStateLoading.value = DetailsUiState.Loading(true)
-            useCase.getRacesFiltersData(raceName)
+            useCase.getRacesFiltersData(InfoHelper.getInstance().itemSelected)
+                .catch { errorMessage ->
+                    _uiStateLoading.value = DetailsUiState.Loading(false)
+                    _uiStateError.value = DetailsUiState.Error(errorMessage)
+                }
+                .collect { charByRace ->
+                    _uiStateLoading.value = DetailsUiState.Loading(false)
+                    _uiStateSuccess.value = DetailsUiState.Success(charByRace)
+                }
+        }
+    }
+
+    private fun getClassesList() {
+        viewModelScope.launch {
+            _uiStateLoading.value = DetailsUiState.Loading(true)
+            useCase.getClassesFiltersData(InfoHelper.getInstance().getItemClicked())
+                .catch { errorMessage ->
+                    _uiStateLoading.value = DetailsUiState.Loading(false)
+                    _uiStateError.value = DetailsUiState.Error(errorMessage)
+                }
+                .collect { charByRace ->
+                    _uiStateLoading.value = DetailsUiState.Loading(false)
+                    _uiStateSuccess.value = DetailsUiState.Success(charByRace)
+                }
+        }
+    }
+
+
+    private fun getQualityList() {
+        viewModelScope.launch {
+            _uiStateLoading.value = DetailsUiState.Loading(true)
+            useCase.getQualityFiltersData(InfoHelper.getInstance().getItemClicked())
+                .catch { errorMessage ->
+                    _uiStateLoading.value = DetailsUiState.Loading(false)
+                    _uiStateError.value = DetailsUiState.Error(errorMessage)
+                }
+                .collect { charByRace ->
+                    _uiStateLoading.value = DetailsUiState.Loading(false)
+                    _uiStateSuccess.value = DetailsUiState.Success(charByRace)
+                }
+        }
+    }
+
+    private fun getSetsList() {
+        viewModelScope.launch {
+            _uiStateLoading.value = DetailsUiState.Loading(true)
+            useCase.getSetsFiltersData(InfoHelper.getInstance().getItemClicked())
+                .catch { errorMessage ->
+                    _uiStateLoading.value = DetailsUiState.Loading(false)
+                    _uiStateError.value = DetailsUiState.Error(errorMessage)
+                }
+                .collect { charByRace ->
+                    _uiStateLoading.value = DetailsUiState.Loading(false)
+                    _uiStateSuccess.value = DetailsUiState.Success(charByRace)
+                }
+        }
+    }
+
+    private fun getFactionsList() {
+        viewModelScope.launch {
+            _uiStateLoading.value = DetailsUiState.Loading(true)
+            useCase.getFactionsFiltersData(InfoHelper.getInstance().getItemClicked())
+                .catch { errorMessage ->
+                    _uiStateLoading.value = DetailsUiState.Loading(false)
+                    _uiStateError.value = DetailsUiState.Error(errorMessage)
+                }
+                .collect { charByRace ->
+                    _uiStateLoading.value = DetailsUiState.Loading(false)
+                    _uiStateSuccess.value = DetailsUiState.Success(charByRace)
+                }
+        }
+    }
+
+    private fun getTypesList() {
+        viewModelScope.launch {
+            _uiStateLoading.value = DetailsUiState.Loading(true)
+            useCase.getTypesFiltersData(InfoHelper.getInstance().getItemClicked())
                 .catch { errorMessage ->
                     _uiStateLoading.value = DetailsUiState.Loading(false)
                     _uiStateError.value = DetailsUiState.Error(errorMessage)
@@ -37,7 +138,16 @@ class DetailsViewModel(private val useCase: CardDataUseCase) : ViewModel() {
 }
 
 sealed class DetailsUiState {
-    data class Success(val charByRaceList: List<CardByFilterEntity>) : DetailsUiState()
+    data class Success(val cardsByFilter: List<CardByFilterEntity>) : DetailsUiState()
     data class Error(val error: Throwable) : DetailsUiState()
     data class Loading(val isLoading: Boolean) : DetailsUiState()
+}
+
+enum class FiltersName(var valueType: String) {
+    CLASSES("Classes"),
+    RACES("Races"),
+    TYPES("Types"),
+    FACTIONS("Factions"),
+    SETS("Sets"),
+    QUALITY("Quality");
 }

@@ -6,33 +6,27 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.material.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Divider
+import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.repeatOnLifecycle
 import com.example.InfoHelper
-import com.example.hearthstoneapp.presentation.ui.components.*
+import com.example.hearthstoneapp.presentation.ui.components.CustomText
+import com.example.hearthstoneapp.presentation.ui.components.CustomVerticalList
+import com.example.hearthstoneapp.presentation.ui.components.DotsPulsing
+import com.example.hearthstoneapp.presentation.ui.components.goTo
 import com.example.hearthstoneapp.presentation.ui.theme.HearthStoneAppTheme
 import com.example.hearthstoneapp.presentation.viewmodel.CharViewModel
 import com.example.hearthstoneapp.presentation.viewmodel.InfoUiState
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import org.koin.androidx.compose.get
-import kotlin.random.Random
 
 class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.N)
@@ -44,23 +38,10 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = colorResource(id = R.color.cultured)
                 ) {
-                    InfoHelper.getInstance().setInfoResultValue()
-                    MainScreen()
-                    CustomHomeView()
+                    DetailsScreen()
                 }
             }
         }
-    }
-}
-
-@RequiresApi(Build.VERSION_CODES.N)
-@Composable
-fun CustomHomeView() {
-    Column {
-        CustomDivider()
-        CustomHorizontalList(
-            InfoHelper.getInstance().getInfoListObjects() as HashMap<String, ArrayList<String>>
-        )
     }
 }
 
@@ -88,59 +69,33 @@ private fun CustomDivider() {
     )
 }
 
+@RequiresApi(Build.VERSION_CODES.N)
 @Composable
-private fun MainScreen(viewModel: CharViewModel = get()) {
+private fun DetailsScreen(viewModel: CharViewModel = get()) {
     viewModel.getInfo()
+//    DotsPulsing()
+    val state = viewModel.uiStateSuccess.collectAsState(initial = InfoUiState.Loading(true))
 
-    val lifecycle = LocalLifecycleOwner.current.lifecycle
-    LaunchedEffect(Unit) {
-        lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
-            launch {
-                viewModel.uiStateSuccess.collectLatest { uiStateValue ->
-                    setUiSate(uiStateValue)
+    //Gerenciar o estado do loading
+    when (state.value) {
+        is InfoUiState.Success -> {
+
+            val infoResult = (state.value as InfoUiState.Success).info
+            if (infoResult?.classes != null) {
+                (state.value as InfoUiState.Success).info?.let { viewModel.setInfoResult(it) }
+                Column {
+                    CustomDivider()
+                    CustomHorizontalList(viewModel.getCardInfoList())
                 }
             }
         }
-    }
-}
-
-private fun setUiSate(uiState: InfoUiState) {
-    when (uiState) {
         is InfoUiState.Loading -> {
-            uiState.isLoading
+//            DotsPulsing()
         }
-        is InfoUiState.Success -> {
-            uiState.info.apply {
-//                InfoHelper.getInstance().setInfoResultValue(
-//                    InfoFilterEntity(
-//                        classes = this.classes,
-//                        sets = this.sets,
-//                        qualities = this.qualities,
-//                        races = this.races,
-//                        types = this.types,
-//                        standard = this.standard,
-//                        wild = this.wild,
-//                        factions = this.factions,
-//                        locales = this.locales
-//                    )
-//                )
-            }
-        }
-        is InfoUiState.Error -> {
-            uiState.error
-        }
+        else -> {}
     }
 }
 
-
-@Composable
-fun CircularProgressIndicatorSample(isLoading: Boolean) {
-    Box(modifier = Modifier.fillMaxSize()) {
-        if (isLoading) {
-            CircularProgressIndicator()
-        }
-    }
-}
 
 @RequiresApi(Build.VERSION_CODES.N)
 @Composable

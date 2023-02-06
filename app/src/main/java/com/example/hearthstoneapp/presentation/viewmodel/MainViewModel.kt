@@ -21,6 +21,8 @@ class CharViewModel(private val useCase: CardDataUseCase) : ViewModel() {
     private val _uiStateError = MutableStateFlow(InfoUiState.Error(Throwable()))
     val uiStateError: StateFlow<InfoUiState> = _uiStateError
 
+    private var infoFilterLis: Map<String, List<String>> = emptyMap()
+
     fun getInfo() {
         viewModelScope.launch {
             _uiStateLoading.value = InfoUiState.Loading(true)
@@ -35,10 +37,46 @@ class CharViewModel(private val useCase: CardDataUseCase) : ViewModel() {
                 }
         }
     }
+
+
+    private fun getListInfoFilters(): List<String> =
+        listOf("Classes", "Sets", "Types", "Factions", "Qualities", "Races", "Locales")
+
+    fun setInfoResult(info: InfoFilterEntity) {
+
+        val localesList = listOf(
+            info.locales?.deDe,
+            info.locales?.enGB,
+            info.locales?.enUs,
+            info.locales?.esEs,
+            info.locales?.esMX,
+            info.locales?.frFr,
+            info.locales?.itIt,
+            info.locales?.plPl,
+            info.locales?.ruRu,
+            info.locales?.zhTw,
+            info.locales?.jaJp,
+            info.locales?.thTh
+        )
+
+        infoFilterLis = mapOf(
+            Pair(getListInfoFilters()[0], info.classes),
+            Pair(getListInfoFilters()[1], info.sets),
+            Pair(getListInfoFilters()[2], info.types),
+            Pair(getListInfoFilters()[3], info.factions),
+            Pair(getListInfoFilters()[4], info.qualities),
+            Pair(getListInfoFilters()[5], info.races),
+            Pair(getListInfoFilters()[6], localesList)
+        ) as Map<String, List<String>>
+    }
+
+    fun getCardInfoList(): Map<String, List<String>> {
+        return infoFilterLis
+    }
 }
 
 sealed class InfoUiState {
-    data class Success(val info: InfoFilterEntity) : InfoUiState()
+    data class Success(val info: InfoFilterEntity? = null) : InfoUiState()
     data class Error(val error: Throwable) : InfoUiState()
     data class Loading(val isLoading: Boolean) : InfoUiState()
 }

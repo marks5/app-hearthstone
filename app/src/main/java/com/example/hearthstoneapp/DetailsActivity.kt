@@ -8,25 +8,20 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.repeatOnLifecycle
 import com.example.InfoHelper
-import com.example.hearthstoneapp.domain.model.CardByFilterEntity
 import com.example.hearthstoneapp.presentation.ui.components.CustomFabButton
 import com.example.hearthstoneapp.presentation.ui.components.CustomText
-import com.example.hearthstoneapp.presentation.ui.components.customVerticalList
+import com.example.hearthstoneapp.presentation.ui.components.CustomVerticalList
 import com.example.hearthstoneapp.presentation.ui.theme.HearthStoneAppTheme
 import com.example.hearthstoneapp.presentation.viewmodel.DetailsUiState
 import com.example.hearthstoneapp.presentation.viewmodel.DetailsViewModel
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
+import com.example.hearthstoneapp.presentation.viewmodel.InfoUiState
 import org.koin.androidx.compose.get
 
 class DetailsActivity : ComponentActivity() {
@@ -38,7 +33,7 @@ class DetailsActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = colorResource(id = R.color.cultured)
                 ) {
-                    MainScreen()
+                    DetailsScreen()
                 }
             }
         }
@@ -46,52 +41,40 @@ class DetailsActivity : ComponentActivity() {
 }
 
 @Composable
-private fun MainScreen(viewModel: DetailsViewModel = get()) {
-    viewModel.getRaceList(InfoHelper.getInstance().itemSelected)
+private fun DetailsScreen(viewModel: DetailsViewModel = get()) {
+    viewModel.getFilterName()
+//    DotsPulsing()
+    val state = viewModel.uiStateSuccess.collectAsState(initial = InfoUiState.Loading(true))
 
-    var result: List<CardByFilterEntity>? = null
-    var isLoading: Boolean? = false
-
-    val lifecycle = LocalLifecycleOwner.current.lifecycle
-    LaunchedEffect(Unit) {
-        lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
-            launch {
-                viewModel.uiStateSuccess.collectLatest { uiStateValue ->
-                    when (uiStateValue) {
-                        is DetailsUiState.Loading -> {
-                            isLoading = true
-                        }
-                        is DetailsUiState.Success -> {
-                            result = uiStateValue.charByRaceList
-                            isLoading = false
-                        }
-                        is DetailsUiState.Error -> {
-                            uiStateValue.error
-                            isLoading = false
-                        }
-                    }
+    //Gerenciar o estado do loading
+    when (state.value) {
+        is DetailsUiState.Success -> {
+            val charListRaceResult = (state.value as DetailsUiState.Success).cardsByFilter
+            if (charListRaceResult.isNotEmpty()) {
+                Column {
+                    CustomFabButton(
+                        backgroundColor = R.color.dark_gunmetal,
+                        intentClass = MainActivity::class.java,
+                        context = LocalContext.current,
+                        drawable = R.drawable.ic_button_back
+                    )
+                    CustomText(
+                        text = InfoHelper.getInstance().itemKeySelected,
+                        colorBackground = R.color.dark_gunmetal,
+                        fontFamily = R.font.avenir_book,
+                        fontSizeText = 22.sp,
+                        modifier = Modifier.padding(
+                            start = 280.dp,
+                            bottom = 8.dp,
+                        )
+                    )
+                    CustomVerticalList(charListRaceResult)
                 }
             }
         }
-    }
 
-    Column {
-        CustomFabButton(
-            backgroundColor = R.color.dark_gunmetal,
-            intentClass = MainActivity::class.java,
-            context = LocalContext.current,
-            drawable = R.drawable.ic_button_back
-        )
-        CustomText(
-            text = InfoHelper.getInstance().itemKeySelected,
-            colorBackground = R.color.dark_gunmetal,
-            fontFamily = R.font.avenir_book,
-            fontSizeText = 22.sp,
-            modifier = Modifier.padding(
-                start = 280.dp,
-                bottom = 8.dp,
-            )
-        )
-        customVerticalList(emptyList())
+        is DetailsUiState.Loading -> {
+//            DotsPulsing()
+        }
     }
 }

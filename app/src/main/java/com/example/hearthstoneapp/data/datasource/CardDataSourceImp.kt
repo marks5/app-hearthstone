@@ -15,6 +15,26 @@ class CardDataSourceImp(private val service: CardService) : CardDataSource {
     override fun fetchRacesFiltersData(raceName: String) = call<List<CardByFilterEntity>> {
         service.fetchRacesFiltersData(raceName)
     }
+
+    override fun fetchClassesFiltersData(className: String) = call<List<CardByFilterEntity>> {
+        service.fetchClassesFiltersData(className)
+    }
+
+    override fun fetchQualityFiltersData(qualityName: String) = call<List<CardByFilterEntity>> {
+        service.fetchQualityFiltersData(qualityName)
+    }
+
+    override fun fetchSetsFiltersData(setsName: String) = call<List<CardByFilterEntity>> {
+        service.fetchSetsFiltersData(setsName)
+    }
+
+    override fun fetchFactionsFiltersData(factionsName: String) = call<List<CardByFilterEntity>> {
+        service.fetchFactionFiltersData(factionsName)
+    }
+
+    override fun fetchTypesFiltersData(typesName: String) = call<List<CardByFilterEntity>> {
+        service.fetchTypesFiltersData(typesName)
+    }
 }
 
 fun <T> call(block: suspend FlowCollector<T>.() -> T): Flow<T> = flow {
