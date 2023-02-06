@@ -39,7 +39,7 @@ class DetailsViewModel(private val useCase: CardDataUseCase) : ViewModel() {
             FiltersName.SETS.valueType -> {
                 getSetsList()
             }
-            FiltersName.QUALITY.valueType -> {
+            FiltersName.QUALITIES.valueType -> {
                 getQualityList()
             }
         }
@@ -63,7 +63,7 @@ class DetailsViewModel(private val useCase: CardDataUseCase) : ViewModel() {
     private fun getClassesList() {
         viewModelScope.launch {
             _uiStateLoading.value = DetailsUiState.Loading(true)
-            useCase.getClassesFiltersData(InfoHelper.getInstance().getItemClicked())
+            useCase.getClassesFiltersData(InfoHelper.getInstance().itemSelected)
                 .catch { errorMessage ->
                     _uiStateLoading.value = DetailsUiState.Loading(false)
                     _uiStateError.value = DetailsUiState.Error(errorMessage)
@@ -79,7 +79,7 @@ class DetailsViewModel(private val useCase: CardDataUseCase) : ViewModel() {
     private fun getQualityList() {
         viewModelScope.launch {
             _uiStateLoading.value = DetailsUiState.Loading(true)
-            useCase.getQualityFiltersData(InfoHelper.getInstance().getItemClicked())
+            useCase.getQualityFiltersData(InfoHelper.getInstance().itemSelected)
                 .catch { errorMessage ->
                     _uiStateLoading.value = DetailsUiState.Loading(false)
                     _uiStateError.value = DetailsUiState.Error(errorMessage)
@@ -94,7 +94,7 @@ class DetailsViewModel(private val useCase: CardDataUseCase) : ViewModel() {
     private fun getSetsList() {
         viewModelScope.launch {
             _uiStateLoading.value = DetailsUiState.Loading(true)
-            useCase.getSetsFiltersData(InfoHelper.getInstance().getItemClicked())
+            useCase.getSetsFiltersData(InfoHelper.getInstance().itemSelected)
                 .catch { errorMessage ->
                     _uiStateLoading.value = DetailsUiState.Loading(false)
                     _uiStateError.value = DetailsUiState.Error(errorMessage)
@@ -109,7 +109,7 @@ class DetailsViewModel(private val useCase: CardDataUseCase) : ViewModel() {
     private fun getFactionsList() {
         viewModelScope.launch {
             _uiStateLoading.value = DetailsUiState.Loading(true)
-            useCase.getFactionsFiltersData(InfoHelper.getInstance().getItemClicked())
+            useCase.getFactionsFiltersData(InfoHelper.getInstance().itemSelected)
                 .catch { errorMessage ->
                     _uiStateLoading.value = DetailsUiState.Loading(false)
                     _uiStateError.value = DetailsUiState.Error(errorMessage)
@@ -124,7 +124,7 @@ class DetailsViewModel(private val useCase: CardDataUseCase) : ViewModel() {
     private fun getTypesList() {
         viewModelScope.launch {
             _uiStateLoading.value = DetailsUiState.Loading(true)
-            useCase.getTypesFiltersData(InfoHelper.getInstance().getItemClicked())
+            useCase.getTypesFiltersData(InfoHelper.getInstance().itemSelected)
                 .catch { errorMessage ->
                     _uiStateLoading.value = DetailsUiState.Loading(false)
                     _uiStateError.value = DetailsUiState.Error(errorMessage)
@@ -149,5 +149,5 @@ enum class FiltersName(var valueType: String) {
     TYPES("Types"),
     FACTIONS("Factions"),
     SETS("Sets"),
-    QUALITY("Quality");
+    QUALITIES("Qualities");
 }

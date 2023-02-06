@@ -20,7 +20,7 @@ interface CardService {
     suspend fun fetchQualityFiltersData(@Path("qualityName") qualityName: String): List<CardByFilterEntity>
 
     @GET("cards/sets/{setsName}")
-    suspend fun fetchSetsFiltersData(@Path("setName") setsName: String): List<CardByFilterEntity>
+    suspend fun fetchSetsFiltersData(@Path("setsName") setsName: String): List<CardByFilterEntity>
 
 
     @GET("cards/factions/{factionName}")
