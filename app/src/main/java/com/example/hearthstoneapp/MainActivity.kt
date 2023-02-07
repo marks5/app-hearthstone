@@ -1,32 +1,40 @@
 package com.example.hearthstoneapp
 
-import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
 import androidx.compose.material.Divider
 import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.InfoHelper
-import com.example.hearthstoneapp.presentation.ui.components.CustomText
-import com.example.hearthstoneapp.presentation.ui.components.CustomVerticalList
 import com.example.hearthstoneapp.presentation.ui.components.DotsPulsing
-import com.example.hearthstoneapp.presentation.ui.components.goTo
+import com.example.hearthstoneapp.presentation.ui.components.intent
 import com.example.hearthstoneapp.presentation.ui.theme.HearthStoneAppTheme
-import com.example.hearthstoneapp.presentation.viewmodel.CharViewModel
+import com.example.hearthstoneapp.presentation.viewmodel.CardViewModel
 import com.example.hearthstoneapp.presentation.viewmodel.InfoUiState
 import org.koin.androidx.compose.get
+import kotlin.random.Random
 
 class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.N)
@@ -45,68 +53,136 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Composable
-private fun CustomDivider() {
-    CustomText(
-        text = stringResource(id = R.string.title_home),
-        colorBackground = R.color.dark_gunmetal,
-        fontFamily = R.font.avenir_black,
-        fontSizeText = 40.sp,
-        modifier = Modifier.padding(
-            start = 37.dp,
-            top = 90.dp,
-            bottom = 8.dp,
-            end = 113.dp
-        )
-    )
-
-    Divider(
-        startIndent = 39.dp,
-        thickness = 0.5.dp,
-        color = colorResource(
-            id = R.color.white
-        )
-    )
-}
-
 @RequiresApi(Build.VERSION_CODES.N)
 @Composable
-private fun DetailsScreen(viewModel: CharViewModel = get()) {
+private fun DetailsScreen(viewModel: CardViewModel = get()) {
     viewModel.getInfo()
-//    DotsPulsing()
+
     val state = viewModel.uiStateSuccess.collectAsState(initial = InfoUiState.Loading(true))
 
-    //Gerenciar o estado do loading
     when (state.value) {
         is InfoUiState.Success -> {
-
             val infoResult = (state.value as InfoUiState.Success).info
-            if (infoResult?.classes != null) {
+            infoResult?.classes?.let {
                 (state.value as InfoUiState.Success).info?.let { viewModel.setInfoResult(it) }
-                Column {
-                    CustomDivider()
-                    CustomHorizontalList(viewModel.getCardInfoList())
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.TopStart
+                ) {
+                    Box(
+                        contentAlignment = Alignment.TopStart,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 90.dp, start = 24.dp)
+                    ) {
+                        Column {
+                            Text(
+                                text = stringResource(id = R.string.title_home),
+                                color = colorResource(id = R.color.dark_gunmetal),
+                                fontSize = 40.sp,
+                                modifier = Modifier.padding(bottom = 8.dp),
+                                fontFamily = FontFamily(Font(R.font.avenir_900))
+                            )
+                            Divider(startIndent = 8.dp, thickness = 1.dp, color = Color.White)
+
+                            Box {
+                                val context = LocalContext.current
+                                LazyColumn(
+                                    contentPadding = PaddingValues(
+                                        horizontal = 8.dp,
+                                        vertical = 8.dp
+                                    ),
+                                    verticalArrangement = Arrangement.SpaceEvenly,
+                                    content = {
+
+                                        viewModel.getCardInfoList().forEach { (key, values) ->
+                                            item {
+                                                Text(
+                                                    modifier = Modifier
+                                                        .padding(
+                                                            top = 24.dp
+                                                        ),
+                                                    color = Color(R.color.dark_silver),
+                                                    fontSize = 16.sp,
+                                                    text = key,
+                                                    fontFamily = FontFamily(Font(R.font.avenir_400))
+                                                )
+                                            }
+
+                                            item {
+                                                LazyRow(
+                                                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                                    content = {
+                                                        item {
+                                                            values.map {
+                                                                Card(
+                                                                    modifier = Modifier
+                                                                        .padding(
+                                                                            start = 16.dp,
+                                                                            top = 10.dp
+                                                                        )
+                                                                        .width(144.dp)
+                                                                        .height(104.dp)
+                                                                        .clickable {
+                                                                            intent(
+                                                                                mContext = context,
+                                                                                intentClass = DetailsActivity::class.java
+                                                                            )
+                                                                            InfoHelper
+                                                                                .getInstance()
+                                                                                .setItemClicked(it)
+                                                                            InfoHelper
+                                                                                .getInstance()
+                                                                                .setItemKeyClicked(
+                                                                                    key
+                                                                                )
+                                                                        },
+                                                                    shape = RoundedCornerShape(16.dp),
+                                                                    backgroundColor = randomColor()
+                                                                ) {
+                                                                    Column(
+                                                                        Modifier.padding(
+                                                                            top = 50.dp,
+                                                                            start = 10.dp
+                                                                        )
+                                                                    ) {
+
+                                                                        Text(
+                                                                            text = it,
+                                                                            textAlign = TextAlign.Left,
+                                                                            color = colorResource(id = R.color.white),
+                                                                            fontSize = 18.sp,
+                                                                            modifier = Modifier.padding(
+                                                                                4.dp
+                                                                            ),
+                                                                            fontFamily = FontFamily(Font(R.font.avenir_400))
+                                                                        )
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                )
+                                            }
+                                        }
+                                    }
+                                )
+                            }
+                        }
+                    }
                 }
             }
         }
+
         is InfoUiState.Loading -> {
-//            DotsPulsing()
+            DotsPulsing()
         }
         else -> {}
     }
 }
 
-
-@RequiresApi(Build.VERSION_CODES.N)
-@Composable
-private fun CustomHorizontalList(
-    classes: Map<String, List<String>>
-) {
-    CustomVerticalList(classes)
-}
-
-fun goToDetails(mContext: Context, itemSelected: String, key: String) {
-    goTo(mContext, DetailsActivity::class.java)
-    InfoHelper.getInstance().setItemClicked(itemSelected)
-    InfoHelper.getInstance().setItemKeyClicked(key)
-}
+fun randomColor() = Color(
+    Random.nextInt(255),
+    Random.nextInt(255),
+    Random.nextInt(255)
+)

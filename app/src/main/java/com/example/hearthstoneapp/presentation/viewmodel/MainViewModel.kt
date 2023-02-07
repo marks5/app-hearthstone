@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 
 
-class CharViewModel(private val useCase: CardDataUseCase) : ViewModel() {
+class CardViewModel(private val useCase: CardDataUseCase) : ViewModel() {
 
     private val _uiStateSuccess = MutableStateFlow(InfoUiState.Success(InfoFilterEntity()))
     val uiStateSuccess: StateFlow<InfoUiState> = _uiStateSuccess

@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.hearthstoneapp.randomColor
 
 const val numberOfDots = 7
 val dotSize = 50.dp

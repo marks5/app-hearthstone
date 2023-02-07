@@ -3,15 +3,15 @@ package com.example.hearthstoneapp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.InfoHelper
@@ -50,6 +50,7 @@ private fun DetailsScreen(viewModel: DetailsViewModel = get()) {
     when (state.value) {
         is DetailsUiState.Success -> {
             val charListRaceResult = (state.value as DetailsUiState.Success).cardsByFilter
+
             if (charListRaceResult.isNotEmpty()) {
                 Column {
                     CustomFabButton(
@@ -61,7 +62,7 @@ private fun DetailsScreen(viewModel: DetailsViewModel = get()) {
                     CustomText(
                         text = InfoHelper.getInstance().itemKeySelected,
                         colorBackground = R.color.dark_gunmetal,
-                        fontFamily = R.font.avenir_book,
+                        fontFamily = R.font.avenir_400,
                         fontSizeText = 22.sp,
                         modifier = Modifier.padding(
                             start = 280.dp,
@@ -69,6 +70,24 @@ private fun DetailsScreen(viewModel: DetailsViewModel = get()) {
                         )
                     )
                     CustomVerticalList(charListRaceResult)
+                }
+            } else {
+                Column {
+                    CustomFabButton(
+                        backgroundColor = R.color.dark_gunmetal,
+                        intentClass = MainActivity::class.java,
+                        context = LocalContext.current,
+                        drawable = R.drawable.ic_button_back
+                    )
+
+                    Text(
+                        text = "Nothing to show",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(50.dp)
+                            .width(100.dp),
+                        textAlign = TextAlign.Center
+                    )
                 }
             }
         }

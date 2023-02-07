@@ -23,7 +23,7 @@ fun CustomFabButton(
     context: Context
 ) {
     FloatingActionButton(
-        onClick = { goTo(context, intentClass) },
+        onClick = { intent(context, intentClass) },
         Modifier
             .padding(top = 64.dp, start = 24.dp)
             .size(80.dp),
@@ -36,6 +36,6 @@ fun CustomFabButton(
     }
 }
 
-fun goTo(mContext: Context, intentClass: Class<*>) {
+fun intent(mContext: Context, intentClass: Class<*>) {
     mContext.startActivity(Intent(mContext, intentClass))
 }
