@@ -1,16 +1,22 @@
 package com.example.hearthstoneapp.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.hearthstoneapp.domain.model.InfoFilterEntity
 import com.example.hearthstoneapp.domain.useCase.CardDataUseCase
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 
+class MainViewModel(
+    private val useCase: CardDataUseCase,
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+) : ViewModel() {
 
-class CardViewModel(private val useCase: CardDataUseCase) : ViewModel() {
+    private val scope = CoroutineScope(ioDispatcher)
 
     private val _uiStateSuccess = MutableStateFlow(InfoUiState.Success(InfoFilterEntity()))
     val uiStateSuccess: StateFlow<InfoUiState> = _uiStateSuccess
@@ -24,7 +30,7 @@ class CardViewModel(private val useCase: CardDataUseCase) : ViewModel() {
     private var infoFilterLis: Map<String, List<String>> = emptyMap()
 
     fun getInfo() {
-        viewModelScope.launch {
+        scope.launch {
             _uiStateLoading.value = InfoUiState.Loading(true)
             useCase.getCardFiltersData()
                 .catch { errorMessage ->

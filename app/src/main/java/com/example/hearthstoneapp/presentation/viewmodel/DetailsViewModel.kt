@@ -1,16 +1,23 @@
 package com.example.hearthstoneapp.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.InfoHelper
 import com.example.hearthstoneapp.domain.model.CardByFilterEntity
 import com.example.hearthstoneapp.domain.useCase.CardDataUseCase
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 
-class DetailsViewModel(private val useCase: CardDataUseCase) : ViewModel() {
+class DetailsViewModel(
+    private val useCase: CardDataUseCase,
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+) : ViewModel() {
+
+    private val scope = CoroutineScope(ioDispatcher)
 
     private val _uiStateSuccess = MutableStateFlow(DetailsUiState.Success(emptyList()))
     val uiStateSuccess: StateFlow<DetailsUiState> = _uiStateSuccess
@@ -46,7 +53,7 @@ class DetailsViewModel(private val useCase: CardDataUseCase) : ViewModel() {
     }
 
     private fun getRacesList() {
-        viewModelScope.launch {
+        scope.launch {
             _uiStateLoading.value = DetailsUiState.Loading(true)
             useCase.getRacesFiltersData(InfoHelper.getInstance().itemSelected)
                 .catch { errorMessage ->
@@ -61,7 +68,7 @@ class DetailsViewModel(private val useCase: CardDataUseCase) : ViewModel() {
     }
 
     private fun getClassesList() {
-        viewModelScope.launch {
+        scope.launch {
             _uiStateLoading.value = DetailsUiState.Loading(true)
             useCase.getClassesFiltersData(InfoHelper.getInstance().itemSelected)
                 .catch { errorMessage ->
@@ -77,7 +84,7 @@ class DetailsViewModel(private val useCase: CardDataUseCase) : ViewModel() {
 
 
     private fun getQualityList() {
-        viewModelScope.launch {
+        scope.launch {
             _uiStateLoading.value = DetailsUiState.Loading(true)
             useCase.getQualityFiltersData(InfoHelper.getInstance().itemSelected)
                 .catch { errorMessage ->
@@ -92,7 +99,7 @@ class DetailsViewModel(private val useCase: CardDataUseCase) : ViewModel() {
     }
 
     private fun getSetsList() {
-        viewModelScope.launch {
+        scope.launch {
             _uiStateLoading.value = DetailsUiState.Loading(true)
             useCase.getSetsFiltersData(InfoHelper.getInstance().itemSelected)
                 .catch { errorMessage ->
@@ -107,7 +114,7 @@ class DetailsViewModel(private val useCase: CardDataUseCase) : ViewModel() {
     }
 
     private fun getFactionsList() {
-        viewModelScope.launch {
+        scope.launch {
             _uiStateLoading.value = DetailsUiState.Loading(true)
             useCase.getFactionsFiltersData(InfoHelper.getInstance().itemSelected)
                 .catch { errorMessage ->
@@ -122,7 +129,7 @@ class DetailsViewModel(private val useCase: CardDataUseCase) : ViewModel() {
     }
 
     private fun getTypesList() {
-        viewModelScope.launch {
+        scope.launch {
             _uiStateLoading.value = DetailsUiState.Loading(true)
             useCase.getTypesFiltersData(InfoHelper.getInstance().itemSelected)
                 .catch { errorMessage ->

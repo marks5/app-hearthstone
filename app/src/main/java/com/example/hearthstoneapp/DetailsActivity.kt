@@ -28,7 +28,6 @@ import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.example.InfoHelper
 import com.example.hearthstoneapp.presentation.ui.components.CustomFabButton
-import com.example.hearthstoneapp.presentation.ui.components.intent
 import com.example.hearthstoneapp.presentation.ui.theme.HearthStoneAppTheme
 import com.example.hearthstoneapp.presentation.viewmodel.DetailsUiState
 import com.example.hearthstoneapp.presentation.viewmodel.DetailsViewModel
@@ -68,10 +67,7 @@ private fun DetailsScreen(viewModel: DetailsViewModel = get()) {
 
                     FloatingActionButton(
                         onClick = {
-                            intent(
-                                mContext = context,
-                                intentClass = DetailsActivity::class.java
-                            )
+                            (context as DetailsActivity).finish()
                         },
                         Modifier
                             .padding(top = 64.dp, start = 24.dp)

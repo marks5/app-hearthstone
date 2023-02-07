@@ -31,7 +31,7 @@ import com.example.InfoHelper
 import com.example.hearthstoneapp.presentation.ui.components.DotsPulsing
 import com.example.hearthstoneapp.presentation.ui.components.intent
 import com.example.hearthstoneapp.presentation.ui.theme.HearthStoneAppTheme
-import com.example.hearthstoneapp.presentation.viewmodel.CardViewModel
+import com.example.hearthstoneapp.presentation.viewmodel.MainViewModel
 import com.example.hearthstoneapp.presentation.viewmodel.InfoUiState
 import org.koin.androidx.compose.get
 import kotlin.random.Random
@@ -55,7 +55,7 @@ class MainActivity : ComponentActivity() {
 
 @RequiresApi(Build.VERSION_CODES.N)
 @Composable
-private fun DetailsScreen(viewModel: CardViewModel = get()) {
+private fun DetailsScreen(viewModel: MainViewModel = get()) {
     viewModel.getInfo()
 
     val state = viewModel.uiStateSuccess.collectAsState(initial = InfoUiState.Loading(true))

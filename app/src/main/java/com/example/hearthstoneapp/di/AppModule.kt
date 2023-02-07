@@ -1,6 +1,6 @@
 package com.example.hearthstoneapp.di
 
-import com.example.hearthstoneapp.presentation.viewmodel.CardViewModel
+import com.example.hearthstoneapp.presentation.viewmodel.MainViewModel
 import com.example.hearthstoneapp.data.*
 import com.example.hearthstoneapp.data.datasource.CardDataSource
 import com.example.hearthstoneapp.data.datasource.CardDataSourceImp
@@ -18,7 +18,7 @@ val appModule = module {
     factory<CardDataSource> { CardDataSourceImp(service = get()) }
     factory<CardDataRepository> { CardDataRepositoryImp(dataSource = get()) }
     factory<CardDataUseCase> { CardDataUseCaseImp(repository = get()) }
-    viewModel { CardViewModel(useCase = get()) }
+    viewModel { MainViewModel(useCase = get()) }
     viewModel { DetailsViewModel(useCase = get()) }
 
     factory<CardService> {
