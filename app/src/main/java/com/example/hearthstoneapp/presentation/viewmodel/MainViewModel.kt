@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 
 class MainViewModel(
     private val useCase: CardDataUseCase,
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+    ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel() {
 
     private val scope = CoroutineScope(ioDispatcher)
