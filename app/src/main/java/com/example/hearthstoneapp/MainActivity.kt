@@ -10,10 +10,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.Divider
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -28,11 +25,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.InfoHelper
-import com.example.hearthstoneapp.presentation.ui.components.DotsPulsing
+import com.example.hearthstoneapp.presentation.UiState
 import com.example.hearthstoneapp.presentation.ui.components.intent
 import com.example.hearthstoneapp.presentation.ui.theme.HearthStoneAppTheme
 import com.example.hearthstoneapp.presentation.viewmodel.MainViewModel
-import com.example.hearthstoneapp.presentation.viewmodel.InfoUiState
 import org.koin.androidx.compose.get
 import kotlin.random.Random
 
@@ -58,13 +54,15 @@ class MainActivity : ComponentActivity() {
 private fun MainScreen(viewModel: MainViewModel = get()) {
     viewModel.getInfo()
 
-    val state = viewModel.uiStateSuccess.collectAsState()
+    val state = viewModel.uiState.collectAsState()
 
     when (state.value) {
-        is InfoUiState.Success -> {
-            val infoResult = (state.value as InfoUiState.Success).info
-            infoResult?.classes?.let {
-                (state.value as InfoUiState.Success).info?.let { viewModel.setInfoResult(it) }
+        is UiState.Success -> {
+            val infoResult = (state.value as UiState.Success).info
+            infoResult.classes?.let {
+
+                 viewModel.setInfoResult((state.value as UiState.Success).info)
+
                 Box(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.TopStart
@@ -174,8 +172,11 @@ private fun MainScreen(viewModel: MainViewModel = get()) {
             }
         }
 
-        is InfoUiState.Loading -> {
-            DotsPulsing()
+        is UiState.Loading -> {
+            CircularProgressIndicator(
+                modifier = Modifier
+                    .wrapContentSize(align = Alignment.Center)
+            )
         }
         else -> {}
     }

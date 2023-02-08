@@ -3,6 +3,7 @@ package com.example.hearthstoneapp.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import com.example.hearthstoneapp.domain.model.InfoFilterEntity
 import com.example.hearthstoneapp.domain.useCase.CardDataUseCase
+import com.example.hearthstoneapp.presentation.UiState
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -18,28 +19,23 @@ class MainViewModel(
 
     private val scope = CoroutineScope(ioDispatcher)
 
-    private val _uiStateSuccess = MutableStateFlow(InfoUiState.Success(InfoFilterEntity()))
-    val uiStateSuccess: StateFlow<InfoUiState> = _uiStateSuccess
-
-    private val _uiStateLoading = MutableStateFlow(InfoUiState.Loading(false))
-    val uiStateLoading: StateFlow<InfoUiState> = _uiStateLoading
-
-    private val _uiStateError = MutableStateFlow(InfoUiState.Error(Throwable()))
-    val uiStateError: StateFlow<InfoUiState> = _uiStateError
+    private val _uiState = MutableStateFlow<UiState>(
+        UiState.Success(InfoFilterEntity())
+    )
+    val uiState: StateFlow<UiState> get() = _uiState
 
     private var infoFilterLis: Map<String, List<String>> = emptyMap()
 
     fun getInfo() {
         scope.launch {
-            _uiStateLoading.value = InfoUiState.Loading(true)
+            _uiState.value = UiState.Loading
+
             useCase.getCardFiltersData()
                 .catch { errorMessage ->
-                    _uiStateLoading.value = InfoUiState.Loading(false)
-                    _uiStateError.value = InfoUiState.Error(errorMessage)
+                    _uiState.value = UiState.Error(errorMessage)
                 }
                 .collect { info ->
-                    _uiStateLoading.value = InfoUiState.Loading(false)
-                    _uiStateSuccess.value = InfoUiState.Success(info)
+                    _uiState.value = UiState.Success(info)
                 }
         }
     }
@@ -79,10 +75,4 @@ class MainViewModel(
     fun getCardInfoList(): Map<String, List<String>> {
         return infoFilterLis
     }
-}
-
-sealed class InfoUiState {
-    data class Success(val info: InfoFilterEntity? = null) : InfoUiState()
-    data class Error(val error: Throwable) : InfoUiState()
-    data class Loading(val isLoading: Boolean) : InfoUiState()
 }

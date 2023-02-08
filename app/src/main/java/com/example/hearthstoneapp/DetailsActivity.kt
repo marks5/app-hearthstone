@@ -31,7 +31,7 @@ import com.example.hearthstoneapp.presentation.ui.components.CustomFabButton
 import com.example.hearthstoneapp.presentation.ui.theme.HearthStoneAppTheme
 import com.example.hearthstoneapp.presentation.viewmodel.DetailsUiState
 import com.example.hearthstoneapp.presentation.viewmodel.DetailsViewModel
-import com.example.hearthstoneapp.presentation.viewmodel.InfoUiState
+//import com.example.hearthstoneapp.presentation.viewmodel.InfoUiState
 import org.koin.androidx.compose.get
 
 class DetailsActivity : ComponentActivity() {
@@ -56,7 +56,7 @@ private fun DetailsScreen(viewModel: DetailsViewModel = get()) {
     viewModel.setItemName(FilterName = InfoHelper.getInstance().getItemKeyClicked(),
         itemName = InfoHelper.getInstance().getItemClicked())
 //    DotsPulsing()
-    val state = viewModel.uiStateSuccess.collectAsState(initial = InfoUiState.Loading(true))
+    val state = viewModel.uiStateSuccess.collectAsState()
 
     when (state.value) {
         is DetailsUiState.Success -> {
