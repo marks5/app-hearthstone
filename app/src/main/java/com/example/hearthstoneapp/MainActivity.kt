@@ -25,7 +25,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.InfoHelper
-import com.example.hearthstoneapp.presentation.UiState
+import com.example.hearthstoneapp.presentation.MainUiState
 import com.example.hearthstoneapp.presentation.ui.components.intent
 import com.example.hearthstoneapp.presentation.ui.theme.HearthStoneAppTheme
 import com.example.hearthstoneapp.presentation.viewmodel.MainViewModel
@@ -57,11 +57,14 @@ private fun MainScreen(viewModel: MainViewModel = get()) {
     val state = viewModel.uiState.collectAsState()
 
     when (state.value) {
-        is UiState.Success -> {
-            val infoResult = (state.value as UiState.Success).info
-            infoResult.classes?.let {
+        is MainUiState.Success -> {
 
-                 viewModel.setInfoResult((state.value as UiState.Success).info)
+            val info = (state.value as MainUiState.Success).value
+
+            info.classes?.let {
+
+                 viewModel.setInfoResult(info)
+
 
                 Box(
                     modifier = Modifier.fillMaxSize(),
@@ -172,7 +175,7 @@ private fun MainScreen(viewModel: MainViewModel = get()) {
             }
         }
 
-        is UiState.Loading -> {
+        is MainUiState.Loading -> {
             CircularProgressIndicator(
                 modifier = Modifier
                     .wrapContentSize(align = Alignment.Center)

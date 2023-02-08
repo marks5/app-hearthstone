@@ -1,8 +1,8 @@
 package com.example.hearthstoneapp.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.example.hearthstoneapp.domain.model.CardByFilterEntity
 import com.example.hearthstoneapp.domain.useCase.CardDataUseCase
+import com.example.hearthstoneapp.presentation.DetailsUiState
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -18,14 +18,10 @@ class DetailsViewModel(
 
     private val scope = CoroutineScope(ioDispatcher)
 
-    private val _uiStateSuccess = MutableStateFlow(DetailsUiState.Success(emptyList()))
-    val uiStateSuccess: StateFlow<DetailsUiState> = _uiStateSuccess
-
-    private val _uiStateLoading = MutableStateFlow(DetailsUiState.Loading(false))
-    val uiStateLoading: StateFlow<DetailsUiState> = _uiStateLoading
-
-    private val _uiStateError = MutableStateFlow(DetailsUiState.Error(Throwable()))
-    val uiStateError: StateFlow<DetailsUiState> = _uiStateError
+    private val _uiState = MutableStateFlow<DetailsUiState>(
+        DetailsUiState.Success(emptyList())
+    )
+    val uiState: StateFlow<DetailsUiState> get() = _uiState
 
 
     fun setItemName(itemName: String, FilterName: String) {
@@ -53,30 +49,28 @@ class DetailsViewModel(
 
     private fun getRacesList(itemName: String) {
         scope.launch {
-            _uiStateLoading.value = DetailsUiState.Loading(true)
+            _uiState.value = DetailsUiState.Loading
+
             useCase.getRacesFiltersData(itemName)
                 .catch { errorMessage ->
-                    _uiStateLoading.value = DetailsUiState.Loading(false)
-                    _uiStateError.value = DetailsUiState.Error(errorMessage)
+                    _uiState.value = DetailsUiState.Error(errorMessage)
                 }
-                .collect { charByRace ->
-                    _uiStateLoading.value = DetailsUiState.Loading(false)
-                    _uiStateSuccess.value = DetailsUiState.Success(charByRace)
+                .collect { cardsList ->
+                    _uiState.value = DetailsUiState.Success(cardsList)
                 }
         }
     }
 
     private fun getClassesList(itemName: String) {
         scope.launch {
-            _uiStateLoading.value = DetailsUiState.Loading(true)
+            _uiState.value = DetailsUiState.Loading
+
             useCase.getClassesFiltersData(itemName)
                 .catch { errorMessage ->
-                    _uiStateLoading.value = DetailsUiState.Loading(false)
-                    _uiStateError.value = DetailsUiState.Error(errorMessage)
+                    _uiState.value = DetailsUiState.Error(errorMessage)
                 }
-                .collect { charByRace ->
-                    _uiStateLoading.value = DetailsUiState.Loading(false)
-                    _uiStateSuccess.value = DetailsUiState.Success(charByRace)
+                .collect { cardsList ->
+                    _uiState.value = DetailsUiState.Success(cardsList)
                 }
         }
     }
@@ -84,69 +78,59 @@ class DetailsViewModel(
 
     private fun getQualityList(itemName: String) {
         scope.launch {
-            _uiStateLoading.value = DetailsUiState.Loading(true)
+            _uiState.value = DetailsUiState.Loading
+
             useCase.getQualityFiltersData(itemName)
                 .catch { errorMessage ->
-                    _uiStateLoading.value = DetailsUiState.Loading(false)
-                    _uiStateError.value = DetailsUiState.Error(errorMessage)
+                    _uiState.value = DetailsUiState.Error(errorMessage)
                 }
-                .collect { charByRace ->
-                    _uiStateLoading.value = DetailsUiState.Loading(false)
-                    _uiStateSuccess.value = DetailsUiState.Success(charByRace)
+                .collect { cardsList ->
+                    _uiState.value = DetailsUiState.Success(cardsList)
                 }
         }
     }
 
     private fun getSetsList(itemName: String) {
         scope.launch {
-            _uiStateLoading.value = DetailsUiState.Loading(true)
+            _uiState.value = DetailsUiState.Loading
+
             useCase.getSetsFiltersData(itemName)
                 .catch { errorMessage ->
-                    _uiStateLoading.value = DetailsUiState.Loading(false)
-                    _uiStateError.value = DetailsUiState.Error(errorMessage)
+                    _uiState.value = DetailsUiState.Error(errorMessage)
                 }
-                .collect { charByRace ->
-                    _uiStateLoading.value = DetailsUiState.Loading(false)
-                    _uiStateSuccess.value = DetailsUiState.Success(charByRace)
+                .collect { cardsList ->
+                    _uiState.value = DetailsUiState.Success(cardsList)
                 }
         }
     }
 
     private fun getFactionsList(itemName: String) {
         scope.launch {
-            _uiStateLoading.value = DetailsUiState.Loading(true)
+            _uiState.value = DetailsUiState.Loading
+
             useCase.getFactionsFiltersData(itemName)
                 .catch { errorMessage ->
-                    _uiStateLoading.value = DetailsUiState.Loading(false)
-                    _uiStateError.value = DetailsUiState.Error(errorMessage)
+                    _uiState.value = DetailsUiState.Error(errorMessage)
                 }
-                .collect { charByRace ->
-                    _uiStateLoading.value = DetailsUiState.Loading(false)
-                    _uiStateSuccess.value = DetailsUiState.Success(charByRace)
+                .collect { cardsList ->
+                    _uiState.value = DetailsUiState.Success(cardsList)
                 }
         }
     }
 
     private fun getTypesList(itemName: String) {
         scope.launch {
-            _uiStateLoading.value = DetailsUiState.Loading(true)
+            _uiState.value = DetailsUiState.Loading
+
             useCase.getTypesFiltersData(itemName)
                 .catch { errorMessage ->
-                    _uiStateLoading.value = DetailsUiState.Loading(false)
-                    _uiStateError.value = DetailsUiState.Error(errorMessage)
+                    _uiState.value = DetailsUiState.Error(errorMessage)
                 }
-                .collect { charByRace ->
-                    _uiStateLoading.value = DetailsUiState.Loading(false)
-                    _uiStateSuccess.value = DetailsUiState.Success(charByRace)
+                .collect { cardsList ->
+                    _uiState.value = DetailsUiState.Success(cardsList)
                 }
         }
     }
-}
-
-sealed class DetailsUiState {
-    data class Success(val cardsByFilter: List<CardByFilterEntity>) : DetailsUiState()
-    data class Error(val error: Throwable) : DetailsUiState()
-    data class Loading(val isLoading: Boolean) : DetailsUiState()
 }
 
 enum class FiltersName(var valueType: String) {

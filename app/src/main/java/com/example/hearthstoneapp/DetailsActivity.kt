@@ -8,12 +8,10 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
-import androidx.compose.material.Card
-import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -27,9 +25,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.example.InfoHelper
+import com.example.hearthstoneapp.presentation.DetailsUiState
+import com.example.hearthstoneapp.presentation.MainUiState
 import com.example.hearthstoneapp.presentation.ui.components.CustomFabButton
 import com.example.hearthstoneapp.presentation.ui.theme.HearthStoneAppTheme
-import com.example.hearthstoneapp.presentation.viewmodel.DetailsUiState
 import com.example.hearthstoneapp.presentation.viewmodel.DetailsViewModel
 //import com.example.hearthstoneapp.presentation.viewmodel.InfoUiState
 import org.koin.androidx.compose.get
@@ -55,12 +54,12 @@ class DetailsActivity : ComponentActivity() {
 private fun DetailsScreen(viewModel: DetailsViewModel = get()) {
     viewModel.setItemName(FilterName = InfoHelper.getInstance().getItemKeyClicked(),
         itemName = InfoHelper.getInstance().getItemClicked())
-//    DotsPulsing()
-    val state = viewModel.uiStateSuccess.collectAsState()
+
+    val state = viewModel.uiState.collectAsState()
 
     when (state.value) {
         is DetailsUiState.Success -> {
-            val cardListRaceResult = (state.value as DetailsUiState.Success).cardsByFilter
+            val cardListRaceResult = (state.value as DetailsUiState.Success).value
 
             if (cardListRaceResult.isNotEmpty()) {
                 Column {
@@ -140,7 +139,11 @@ private fun DetailsScreen(viewModel: DetailsViewModel = get()) {
         }
 
         is DetailsUiState.Loading -> {
-//            DotsPulsing()
+            CircularProgressIndicator(
+                modifier = Modifier
+                    .wrapContentSize(align = Alignment.Center)
+            )
         }
+        else -> {}
     }
 }
