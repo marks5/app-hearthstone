@@ -46,7 +46,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = colorResource(id = R.color.cultured)
                 ) {
-                    DetailsScreen()
+                    MainScreen()
                 }
             }
         }
@@ -55,10 +55,10 @@ class MainActivity : ComponentActivity() {
 
 @RequiresApi(Build.VERSION_CODES.N)
 @Composable
-private fun DetailsScreen(viewModel: MainViewModel = get()) {
+private fun MainScreen(viewModel: MainViewModel = get()) {
     viewModel.getInfo()
 
-    val state = viewModel.uiStateSuccess.collectAsState(initial = InfoUiState.Loading(true))
+    val state = viewModel.uiStateSuccess.collectAsState()
 
     when (state.value) {
         is InfoUiState.Success -> {

@@ -1,7 +1,6 @@
 package com.example.hearthstoneapp.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.example.InfoHelper
 import com.example.hearthstoneapp.domain.model.CardByFilterEntity
 import com.example.hearthstoneapp.domain.useCase.CardDataUseCase
 import kotlinx.coroutines.CoroutineDispatcher
@@ -29,33 +28,33 @@ class DetailsViewModel(
     val uiStateError: StateFlow<DetailsUiState> = _uiStateError
 
 
-    fun getFilterName() {
-        when (InfoHelper.getInstance().getItemKeyClicked()) {
+    fun setFilterName(filterName: String) {
+        when (filterName) {
             FiltersName.CLASSES.valueType -> {
-                getClassesList()
+                getClassesList(filterName)
             }
             FiltersName.RACES.valueType -> {
-                getRacesList()
+                getRacesList(filterName)
             }
             FiltersName.TYPES.valueType -> {
-                getTypesList()
+                getTypesList(filterName)
             }
             FiltersName.FACTIONS.valueType -> {
-                getFactionsList()
+                getFactionsList(filterName)
             }
             FiltersName.SETS.valueType -> {
-                getSetsList()
+                getSetsList(filterName)
             }
             FiltersName.QUALITIES.valueType -> {
-                getQualityList()
+                getQualityList(filterName)
             }
         }
     }
 
-    private fun getRacesList() {
+    private fun getRacesList(filterName: String) {
         scope.launch {
             _uiStateLoading.value = DetailsUiState.Loading(true)
-            useCase.getRacesFiltersData(InfoHelper.getInstance().itemSelected)
+            useCase.getRacesFiltersData(filterName)
                 .catch { errorMessage ->
                     _uiStateLoading.value = DetailsUiState.Loading(false)
                     _uiStateError.value = DetailsUiState.Error(errorMessage)
@@ -67,10 +66,10 @@ class DetailsViewModel(
         }
     }
 
-    private fun getClassesList() {
+    private fun getClassesList(filterName: String) {
         scope.launch {
             _uiStateLoading.value = DetailsUiState.Loading(true)
-            useCase.getClassesFiltersData(InfoHelper.getInstance().itemSelected)
+            useCase.getClassesFiltersData(filterName)
                 .catch { errorMessage ->
                     _uiStateLoading.value = DetailsUiState.Loading(false)
                     _uiStateError.value = DetailsUiState.Error(errorMessage)
@@ -83,10 +82,10 @@ class DetailsViewModel(
     }
 
 
-    private fun getQualityList() {
+    private fun getQualityList(filterName: String) {
         scope.launch {
             _uiStateLoading.value = DetailsUiState.Loading(true)
-            useCase.getQualityFiltersData(InfoHelper.getInstance().itemSelected)
+            useCase.getQualityFiltersData(filterName)
                 .catch { errorMessage ->
                     _uiStateLoading.value = DetailsUiState.Loading(false)
                     _uiStateError.value = DetailsUiState.Error(errorMessage)
@@ -98,10 +97,10 @@ class DetailsViewModel(
         }
     }
 
-    private fun getSetsList() {
+    private fun getSetsList(filterName: String) {
         scope.launch {
             _uiStateLoading.value = DetailsUiState.Loading(true)
-            useCase.getSetsFiltersData(InfoHelper.getInstance().itemSelected)
+            useCase.getSetsFiltersData(filterName)
                 .catch { errorMessage ->
                     _uiStateLoading.value = DetailsUiState.Loading(false)
                     _uiStateError.value = DetailsUiState.Error(errorMessage)
@@ -113,10 +112,10 @@ class DetailsViewModel(
         }
     }
 
-    private fun getFactionsList() {
+    private fun getFactionsList(filterName: String) {
         scope.launch {
             _uiStateLoading.value = DetailsUiState.Loading(true)
-            useCase.getFactionsFiltersData(InfoHelper.getInstance().itemSelected)
+            useCase.getFactionsFiltersData(filterName)
                 .catch { errorMessage ->
                     _uiStateLoading.value = DetailsUiState.Loading(false)
                     _uiStateError.value = DetailsUiState.Error(errorMessage)
@@ -128,10 +127,10 @@ class DetailsViewModel(
         }
     }
 
-    private fun getTypesList() {
+    private fun getTypesList(filterName: String) {
         scope.launch {
             _uiStateLoading.value = DetailsUiState.Loading(true)
-            useCase.getTypesFiltersData(InfoHelper.getInstance().itemSelected)
+            useCase.getTypesFiltersData(filterName)
                 .catch { errorMessage ->
                     _uiStateLoading.value = DetailsUiState.Loading(false)
                     _uiStateError.value = DetailsUiState.Error(errorMessage)
