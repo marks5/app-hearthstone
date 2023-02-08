@@ -53,7 +53,8 @@ class DetailsActivity : ComponentActivity() {
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun DetailsScreen(viewModel: DetailsViewModel = get()) {
-    viewModel.setFilterName(InfoHelper.getInstance().getItemKeyClicked())
+    viewModel.setItemName(FilterName = InfoHelper.getInstance().getItemKeyClicked(),
+        itemName = InfoHelper.getInstance().getItemClicked())
 //    DotsPulsing()
     val state = viewModel.uiStateSuccess.collectAsState(initial = InfoUiState.Loading(true))
 

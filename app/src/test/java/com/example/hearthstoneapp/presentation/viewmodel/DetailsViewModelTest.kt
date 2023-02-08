@@ -25,13 +25,13 @@ class DetailsViewModelTest {
             val dispatcher = StandardTestDispatcher(testScheduler)
             val viewModelMocked = DetailsViewModel(cardDataUseCase, dispatcher)
 
-            coEvery { cardDataUseCase.getClassesFiltersData(FiltersName.CLASSES.name) } returns flow { cardByFilterEntityList }
-            viewModelMocked.setFilterName(FiltersName.CLASSES.name)
+            coEvery { cardDataUseCase.getClassesFiltersData("Druid") } returns flow { cardByFilterEntityList }
+            viewModelMocked.setItemName("Druid", FiltersName.CLASSES.valueType)
             Truth.assertThat(viewModelMocked.uiStateLoading.value)
                 .isEqualTo(DetailsUiState.Loading(false))
             advanceUntilIdle()
 
-            coVerify { cardDataUseCase.getClassesFiltersData(FiltersName.CLASSES.name) }
+            coVerify { cardDataUseCase.getClassesFiltersData("Druid") }
             Truth.assertThat(viewModelMocked.uiStateLoading.value)
                 .isEqualTo(DetailsUiState.Loading(true))
         }
@@ -42,13 +42,13 @@ class DetailsViewModelTest {
             val dispatcher = StandardTestDispatcher(testScheduler)
             val viewModelMocked = DetailsViewModel(cardDataUseCase, dispatcher)
 
-            coEvery { cardDataUseCase.getRacesFiltersData(FiltersName.RACES.name) } returns flow { cardByFilterEntityList }
-            viewModelMocked.setFilterName(FiltersName.RACES.name)
+            coEvery { cardDataUseCase.getRacesFiltersData("Orc") } returns flow { cardByFilterEntityList }
+            viewModelMocked.setItemName("Orc", FiltersName.RACES.valueType)
             Truth.assertThat(viewModelMocked.uiStateLoading.value)
                 .isEqualTo(DetailsUiState.Loading(false))
             advanceUntilIdle()
 
-            coVerify { cardDataUseCase.getRacesFiltersData(FiltersName.RACES.name) }
+            coVerify { cardDataUseCase.getRacesFiltersData("Orc") }
             Truth.assertThat(viewModelMocked.uiStateLoading.value)
                 .isEqualTo(DetailsUiState.Loading(true))
         }
@@ -59,13 +59,13 @@ class DetailsViewModelTest {
             val dispatcher = StandardTestDispatcher(testScheduler)
             val viewModelMocked = DetailsViewModel(cardDataUseCase, dispatcher)
 
-            coEvery { cardDataUseCase.getSetsFiltersData(FiltersName.SETS.name) } returns flow { cardByFilterEntityList }
-            viewModelMocked.setFilterName(FiltersName.SETS.name)
+            coEvery { cardDataUseCase.getSetsFiltersData("Basic") } returns flow { cardByFilterEntityList }
+            viewModelMocked.setItemName("Basic", FiltersName.SETS.valueType)
             Truth.assertThat(viewModelMocked.uiStateLoading.value)
                 .isEqualTo(DetailsUiState.Loading(false))
             advanceUntilIdle()
 
-            coVerify { cardDataUseCase.getSetsFiltersData(FiltersName.SETS.name) }
+            coVerify { cardDataUseCase.getSetsFiltersData("Basic") }
 
         }
 
@@ -75,13 +75,13 @@ class DetailsViewModelTest {
             val dispatcher = StandardTestDispatcher(testScheduler)
             val viewModelMocked = DetailsViewModel(cardDataUseCase, dispatcher)
 
-            coEvery { cardDataUseCase.getTypesFiltersData("Types") } returns flow { cardByFilterEntityList }
-            viewModelMocked.setFilterName("Types")
+            coEvery { cardDataUseCase.getTypesFiltersData("Minion") } returns flow { cardByFilterEntityList }
+            viewModelMocked.setItemName("Minion", FiltersName.TYPES.valueType)
             Truth.assertThat(viewModelMocked.uiStateLoading.value)
                 .isEqualTo(DetailsUiState.Loading(false))
             advanceUntilIdle()
 
-            coVerify { cardDataUseCase.getTypesFiltersData("Types") }
+            coVerify { cardDataUseCase.getTypesFiltersData("Minion") }
             Truth.assertThat(viewModelMocked.uiStateLoading.value)
                 .isEqualTo(DetailsUiState.Loading(true))
         }
@@ -92,13 +92,13 @@ class DetailsViewModelTest {
             val dispatcher = StandardTestDispatcher(testScheduler)
             val viewModelMocked = DetailsViewModel(cardDataUseCase, dispatcher)
 
-            coEvery { cardDataUseCase.getFactionsFiltersData("Factions") } returns flow { cardByFilterEntityList }
-            viewModelMocked.setFilterName("Factions")
+            coEvery { cardDataUseCase.getFactionsFiltersData("Horde") } returns flow { cardByFilterEntityList }
+            viewModelMocked.setItemName("Horde", FiltersName.FACTIONS.valueType)
             Truth.assertThat(viewModelMocked.uiStateLoading.value)
                 .isEqualTo(DetailsUiState.Loading(false))
             advanceUntilIdle()
 
-            coVerify { cardDataUseCase.getFactionsFiltersData("Factions") }
+            coVerify { cardDataUseCase.getFactionsFiltersData("Horde") }
             Truth.assertThat(viewModelMocked.uiStateLoading.value)
                 .isEqualTo(DetailsUiState.Loading(true))
         }
@@ -109,21 +109,20 @@ class DetailsViewModelTest {
             val dispatcher = StandardTestDispatcher(testScheduler)
             val viewModelMocked = DetailsViewModel(cardDataUseCase, dispatcher)
 
-            coEvery { cardDataUseCase.getQualityFiltersData("Qualities") } returns flow { cardByFilterEntityList }
-            viewModelMocked.setFilterName("Qualities")
+            coEvery { cardDataUseCase.getQualityFiltersData("Rare") } returns flow { cardByFilterEntityList }
+            viewModelMocked.setItemName("Rare", FiltersName.QUALITIES.valueType)
             Truth.assertThat(viewModelMocked.uiStateLoading.value)
                 .isEqualTo(DetailsUiState.Loading(false))
             advanceUntilIdle()
 
-            coVerify { cardDataUseCase.getQualityFiltersData("Qualities") }
+            coVerify { cardDataUseCase.getQualityFiltersData("Rare") }
             Truth.assertThat(viewModelMocked.uiStateLoading.value)
                 .isEqualTo(DetailsUiState.Loading(true))
         }
 
 
     @Test
-    fun `Whenever Classes chosen name filter and has success then return a CardByFilterEntity`() =
-        runTest {
+    fun `Whenever Classes chosen name filter and has success then return a CardByFilterEntity`() = runTest {
             val dispatcher = StandardTestDispatcher(testScheduler)
             val viewModelMocked = DetailsViewModel(cardDataUseCase, dispatcher)
 
@@ -131,17 +130,17 @@ class DetailsViewModelTest {
                 CardByFilterEntity("https://d15f34w2p8l1cc.cloudfront.net/hearthstone/ee2e355e689f8c074216ba922616fed718e5d55211816bf58d95b1f37e7cbf8c.png")
             )
 
-            coEvery { cardDataUseCase.getClassesFiltersData(FiltersName.CLASSES.name) } returns flow {
+            coEvery { cardDataUseCase.getClassesFiltersData("Druid") } returns flow {
                 emit(
                     cardByFilterEntityListMocked
                 )
             }
-            viewModelMocked.setFilterName(FiltersName.CLASSES.name)
+            viewModelMocked.setItemName("Druid", FiltersName.CLASSES.valueType)
             Truth.assertThat(viewModelMocked.uiStateSuccess.value)
                 .isEqualTo(DetailsUiState.Success(listOf()))
             advanceUntilIdle()
 
-            coVerify { cardDataUseCase.getClassesFiltersData(FiltersName.CLASSES.name) }
+            coVerify { cardDataUseCase.getClassesFiltersData("Druid") }
             Truth.assertThat(viewModelMocked.uiStateSuccess.value)
                 .isEqualTo(DetailsUiState.Success(cardByFilterEntityListMocked))
         }

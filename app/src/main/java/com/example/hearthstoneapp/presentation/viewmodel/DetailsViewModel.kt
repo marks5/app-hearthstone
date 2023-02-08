@@ -28,33 +28,33 @@ class DetailsViewModel(
     val uiStateError: StateFlow<DetailsUiState> = _uiStateError
 
 
-    fun setFilterName(filterName: String) {
-        when (filterName) {
+    fun setItemName(itemName: String, FilterName: String) {
+        when (FilterName) {
             FiltersName.CLASSES.valueType -> {
-                getClassesList(filterName)
+                getClassesList(itemName)
             }
             FiltersName.RACES.valueType -> {
-                getRacesList(filterName)
+                getRacesList(itemName)
             }
             FiltersName.TYPES.valueType -> {
-                getTypesList(filterName)
+                getTypesList(itemName)
             }
             FiltersName.FACTIONS.valueType -> {
-                getFactionsList(filterName)
+                getFactionsList(itemName)
             }
             FiltersName.SETS.valueType -> {
-                getSetsList(filterName)
+                getSetsList(itemName)
             }
             FiltersName.QUALITIES.valueType -> {
-                getQualityList(filterName)
+                getQualityList(itemName)
             }
         }
     }
 
-    private fun getRacesList(filterName: String) {
+    private fun getRacesList(itemName: String) {
         scope.launch {
             _uiStateLoading.value = DetailsUiState.Loading(true)
-            useCase.getRacesFiltersData(filterName)
+            useCase.getRacesFiltersData(itemName)
                 .catch { errorMessage ->
                     _uiStateLoading.value = DetailsUiState.Loading(false)
                     _uiStateError.value = DetailsUiState.Error(errorMessage)
@@ -66,10 +66,10 @@ class DetailsViewModel(
         }
     }
 
-    private fun getClassesList(filterName: String) {
+    private fun getClassesList(itemName: String) {
         scope.launch {
             _uiStateLoading.value = DetailsUiState.Loading(true)
-            useCase.getClassesFiltersData(filterName)
+            useCase.getClassesFiltersData(itemName)
                 .catch { errorMessage ->
                     _uiStateLoading.value = DetailsUiState.Loading(false)
                     _uiStateError.value = DetailsUiState.Error(errorMessage)
@@ -82,10 +82,10 @@ class DetailsViewModel(
     }
 
 
-    private fun getQualityList(filterName: String) {
+    private fun getQualityList(itemName: String) {
         scope.launch {
             _uiStateLoading.value = DetailsUiState.Loading(true)
-            useCase.getQualityFiltersData(filterName)
+            useCase.getQualityFiltersData(itemName)
                 .catch { errorMessage ->
                     _uiStateLoading.value = DetailsUiState.Loading(false)
                     _uiStateError.value = DetailsUiState.Error(errorMessage)
@@ -97,10 +97,10 @@ class DetailsViewModel(
         }
     }
 
-    private fun getSetsList(filterName: String) {
+    private fun getSetsList(itemName: String) {
         scope.launch {
             _uiStateLoading.value = DetailsUiState.Loading(true)
-            useCase.getSetsFiltersData(filterName)
+            useCase.getSetsFiltersData(itemName)
                 .catch { errorMessage ->
                     _uiStateLoading.value = DetailsUiState.Loading(false)
                     _uiStateError.value = DetailsUiState.Error(errorMessage)
@@ -112,10 +112,10 @@ class DetailsViewModel(
         }
     }
 
-    private fun getFactionsList(filterName: String) {
+    private fun getFactionsList(itemName: String) {
         scope.launch {
             _uiStateLoading.value = DetailsUiState.Loading(true)
-            useCase.getFactionsFiltersData(filterName)
+            useCase.getFactionsFiltersData(itemName)
                 .catch { errorMessage ->
                     _uiStateLoading.value = DetailsUiState.Loading(false)
                     _uiStateError.value = DetailsUiState.Error(errorMessage)
@@ -127,10 +127,10 @@ class DetailsViewModel(
         }
     }
 
-    private fun getTypesList(filterName: String) {
+    private fun getTypesList(itemName: String) {
         scope.launch {
             _uiStateLoading.value = DetailsUiState.Loading(true)
-            useCase.getTypesFiltersData(filterName)
+            useCase.getTypesFiltersData(itemName)
                 .catch { errorMessage ->
                     _uiStateLoading.value = DetailsUiState.Loading(false)
                     _uiStateError.value = DetailsUiState.Error(errorMessage)
