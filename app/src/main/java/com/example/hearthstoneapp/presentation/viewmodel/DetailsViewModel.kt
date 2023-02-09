@@ -19,7 +19,7 @@ class DetailsViewModel(
     private val scope = CoroutineScope(ioDispatcher)
 
     private val _uiState = MutableStateFlow<DetailsUiState>(
-        DetailsUiState.Success(emptyList())
+        DetailsUiState.Loading
     )
     val uiState: StateFlow<DetailsUiState> get() = _uiState
 

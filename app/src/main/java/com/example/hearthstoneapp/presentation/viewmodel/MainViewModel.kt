@@ -20,7 +20,7 @@ class MainViewModel(
     private val scope = CoroutineScope(ioDispatcher)
 
     private val _uiState = MutableStateFlow<MainUiState>(
-        MainUiState.Success(InfoFilterEntity())
+        MainUiState.Loading
     )
     val uiState: StateFlow<MainUiState> get() = _uiState
 
