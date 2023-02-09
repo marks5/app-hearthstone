@@ -1,5 +1,6 @@
 package com.example.hearthstoneapp
 
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -10,7 +11,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Divider
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -30,7 +34,6 @@ import com.example.hearthstoneapp.presentation.ui.components.intent
 import com.example.hearthstoneapp.presentation.ui.theme.HearthStoneAppTheme
 import com.example.hearthstoneapp.presentation.viewmodel.MainViewModel
 import org.koin.androidx.compose.get
-import kotlin.random.Random
 
 class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.N)
@@ -63,8 +66,7 @@ private fun MainScreen(viewModel: MainViewModel = get()) {
 
             info.classes?.let {
 
-                 viewModel.setInfoResult(info)
-
+                viewModel.setInfoResult(info)
 
                 Box(
                     modifier = Modifier.fillMaxSize(),
@@ -116,8 +118,24 @@ private fun MainScreen(viewModel: MainViewModel = get()) {
                                                     content = {
                                                         item {
                                                             values.map {
-                                                                Card(
-                                                                    modifier = Modifier
+                                                                CustomHorizontalCard(
+                                                                    text = it,
+                                                                    font = FontFamily(Font(R.font.avenir_400)),
+                                                                    modifierText = Modifier.padding(
+                                                                        4.dp
+                                                                    ),
+                                                                    colorCard = randomColor(),
+                                                                    colorText = colorResource(id = R.color.white),
+                                                                    fontSizeText = 18.sp,
+                                                                    textAlign = TextAlign.Left,
+                                                                    shapeSize = RoundedCornerShape(
+                                                                        16.dp
+                                                                    ),
+                                                                    modifierColumn = Modifier.padding(
+                                                                        top = 50.dp,
+                                                                        start = 10.dp
+                                                                    ),
+                                                                    modifierCard = Modifier
                                                                         .padding(
                                                                             start = 16.dp,
                                                                             top = 10.dp
@@ -125,41 +143,13 @@ private fun MainScreen(viewModel: MainViewModel = get()) {
                                                                         .width(144.dp)
                                                                         .height(104.dp)
                                                                         .clickable {
-                                                                            intent(
-                                                                                mContext = context,
-                                                                                intentClass = DetailsActivity::class.java
+                                                                            goToDetailsActivity(
+                                                                                context,
+                                                                                it,
+                                                                                key
                                                                             )
-                                                                            InfoHelper
-                                                                                .getInstance()
-                                                                                .setItemClicked(it)
-                                                                            InfoHelper
-                                                                                .getInstance()
-                                                                                .setItemKeyClicked(
-                                                                                    key
-                                                                                )
-                                                                        },
-                                                                    shape = RoundedCornerShape(16.dp),
-                                                                    backgroundColor = randomColor()
-                                                                ) {
-                                                                    Column(
-                                                                        Modifier.padding(
-                                                                            top = 50.dp,
-                                                                            start = 10.dp
-                                                                        )
-                                                                    ) {
-
-                                                                        Text(
-                                                                            text = it,
-                                                                            textAlign = TextAlign.Left,
-                                                                            color = colorResource(id = R.color.white),
-                                                                            fontSize = 18.sp,
-                                                                            modifier = Modifier.padding(
-                                                                                4.dp
-                                                                            ),
-                                                                            fontFamily = FontFamily(Font(R.font.avenir_400))
-                                                                        )
-                                                                    }
-                                                                }
+                                                                        }
+                                                                )
                                                             }
                                                         }
                                                     }
@@ -185,8 +175,21 @@ private fun MainScreen(viewModel: MainViewModel = get()) {
     }
 }
 
-fun randomColor() = Color(
-    Random.nextInt(255),
-    Random.nextInt(255),
-    Random.nextInt(255)
-)
+private fun goToDetailsActivity(
+    context: Context,
+    value: String,
+    key: String
+) {
+    intent(
+        mContext = context,
+        intentClass = DetailsActivity::class.java
+    )
+    InfoHelper
+        .getInstance()
+        .setItemClicked(value)
+    InfoHelper
+        .getInstance()
+        .setItemKeyClicked(
+            key
+        )
+}

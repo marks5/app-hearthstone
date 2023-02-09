@@ -51,8 +51,10 @@ class DetailsActivity : ComponentActivity() {
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun DetailsScreen(viewModel: DetailsViewModel = get()) {
-    viewModel.setItemName(FilterName = InfoHelper.getInstance().getItemKeyClicked(),
-        itemName = InfoHelper.getInstance().getItemClicked())
+    viewModel.setItemName(
+        FilterName = InfoHelper.getInstance().getItemKeyClicked(),
+        itemName = InfoHelper.getInstance().getItemClicked()
+    )
 
     val state = viewModel.uiState.collectAsState()
 
@@ -96,21 +98,16 @@ private fun DetailsScreen(viewModel: DetailsViewModel = get()) {
                         cardListRaceResult.map {
                             it.img?.let {
                                 item {
-                                    Card(
-                                        modifier = Modifier
-                                            .height(223.dp)
+                                    CustomVerticalCard(
+                                        Modifier
                                             .fillMaxSize()
-                                            .padding(
-                                                top = 8.dp,
-                                                end = 8.dp
-                                            ),
-                                    ) {
-                                        Image(
-                                            painter = rememberAsyncImagePainter(it),
-                                            contentDescription = stringResource(id = R.string.accessibility_item_image),
-                                            contentScale = ContentScale.Fit
-                                        )
-                                    }
+                                            .height(224.dp)
+                                            .width(189.dp)
+                                            .padding(8.dp),
+                                        rememberAsyncImagePainter(it),
+                                        stringResource(id = R.string.accessibility_item_image),
+                                        ContentScale.Fit
+                                    )
                                 }
                             }
                         }
@@ -126,7 +123,7 @@ private fun DetailsScreen(viewModel: DetailsViewModel = get()) {
                     )
 
                     Text(
-                        text = "Nothing to show",
+                        text = stringResource(id = R.string.placeholder_text),
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(50.dp)
