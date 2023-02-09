@@ -28,8 +28,6 @@ class MainViewModel(
 
     fun getInfo() {
         scope.launch {
-            _uiState.value = UiState.Loading
-
             useCase.getCardFiltersData()
                 .catch { errorMessage ->
                     _uiState.value = UiState.Error(errorMessage)

@@ -50,7 +50,6 @@ class DetailsViewModel(
 
     private fun getRacesList(itemName: String) {
         scope.launch {
-            _uiState.value = UiState.Loading
 
             useCase.getRacesFiltersData(itemName)
                 .catch { errorMessage ->
@@ -64,7 +63,6 @@ class DetailsViewModel(
 
     private fun getClassesList(itemName: String) {
         scope.launch {
-            _uiState.value = UiState.Loading
 
             useCase.getClassesFiltersData(itemName)
                 .catch { errorMessage ->
@@ -79,7 +77,6 @@ class DetailsViewModel(
 
     private fun getQualityList(itemName: String) {
         scope.launch {
-            _uiState.value = UiState.Loading
 
             useCase.getQualityFiltersData(itemName)
                 .catch { errorMessage ->
@@ -93,7 +90,6 @@ class DetailsViewModel(
 
     private fun getSetsList(itemName: String) {
         scope.launch {
-            _uiState.value = UiState.Loading
 
             useCase.getSetsFiltersData(itemName)
                 .catch { errorMessage ->
@@ -107,7 +103,6 @@ class DetailsViewModel(
 
     private fun getFactionsList(itemName: String) {
         scope.launch {
-            _uiState.value = UiState.Loading
 
             useCase.getFactionsFiltersData(itemName)
                 .catch { errorMessage ->
@@ -121,7 +116,6 @@ class DetailsViewModel(
 
     private fun getTypesList(itemName: String) {
         scope.launch {
-            _uiState.value = UiState.Loading
 
             useCase.getTypesFiltersData(itemName)
                 .catch { errorMessage ->
