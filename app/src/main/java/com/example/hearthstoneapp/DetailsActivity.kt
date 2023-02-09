@@ -24,9 +24,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
-import com.example.InfoHelper
-import com.example.hearthstoneapp.presentation.DetailsUiState
-import com.example.hearthstoneapp.presentation.MainUiState
+import com.example.hearthstoneapp.domain.InfoHelper
+import com.example.hearthstoneapp.presentation.UiState
 import com.example.hearthstoneapp.presentation.ui.components.CustomFabButton
 import com.example.hearthstoneapp.presentation.ui.theme.HearthStoneAppTheme
 import com.example.hearthstoneapp.presentation.viewmodel.DetailsViewModel
@@ -58,8 +57,8 @@ private fun DetailsScreen(viewModel: DetailsViewModel = get()) {
     val state = viewModel.uiState.collectAsState()
 
     when (state.value) {
-        is DetailsUiState.Success -> {
-            val cardListRaceResult = (state.value as DetailsUiState.Success).value
+        is UiState.Success -> {
+            val cardListRaceResult = (state.value as UiState.Success).value
 
             if (cardListRaceResult.isNotEmpty()) {
                 Column {
@@ -138,7 +137,7 @@ private fun DetailsScreen(viewModel: DetailsViewModel = get()) {
             }
         }
 
-        is DetailsUiState.Loading -> {
+        is UiState.Loading -> {
             CircularProgressIndicator(
                 modifier = Modifier
                     .wrapContentSize(align = Alignment.Center)

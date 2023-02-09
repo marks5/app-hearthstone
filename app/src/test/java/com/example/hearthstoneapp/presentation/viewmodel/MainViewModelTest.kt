@@ -3,6 +3,7 @@ package com.example.hearthstoneapp.presentation.viewmodel
 import com.example.hearthstoneapp.domain.model.InfoFilterEntity
 import com.example.hearthstoneapp.domain.model.Locales
 import com.example.hearthstoneapp.domain.useCase.CardDataUseCase
+import com.example.hearthstoneapp.presentation.UiState
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -18,21 +19,19 @@ import org.junit.Test
 class MainViewModelTest {
 
     private val cardDataUseCase = mockk<CardDataUseCase>()
-    private val infoFilterEntity = mockk<InfoFilterEntity>()
 
     @Test
-    fun `When MainViewModel call get info should start and stop loading then return InfoFilterEntity`() =
+    fun `When MainViewModel call getInfo and has success should return InfoFilterEntity`() =
         runTest {
             val dispatcher = StandardTestDispatcher(testScheduler)
             val viewModelMocked = MainViewModel(cardDataUseCase, dispatcher)
 
-            coEvery { cardDataUseCase.getCardFiltersData() } returns flow { infoFilterEntity }
+            coEvery { cardDataUseCase.getCardFiltersData() } returns flow { emit(infoFilterEntityMocked) }
             viewModelMocked.getInfo()
-            assertThat(viewModelMocked.uiStateLoading.value).isEqualTo(InfoUiState.Loading(false))
+            assertThat(viewModelMocked.uiState.value).isEqualTo(UiState.Loading)
             advanceUntilIdle()
-
             coVerify { cardDataUseCase.getCardFiltersData() }
-            assertThat(viewModelMocked.uiStateLoading.value).isEqualTo(InfoUiState.Loading(true))
+            assertThat(viewModelMocked.uiState.value).isEqualTo(UiState.Success(infoFilterEntityMocked))
         }
 
     private val infoFilterEntityMocked = InfoFilterEntity(
@@ -206,32 +205,4 @@ class MainViewModelTest {
             "thTH"
         )
     )
-
-    @Test
-    fun `When MainViewModel call getInfo and has success should return InfoFilterEntity`() =
-        runTest {
-
-            val dispatcher = StandardTestDispatcher(testScheduler)
-            val viewModelMocked = MainViewModel(cardDataUseCase, dispatcher)
-
-            coEvery { cardDataUseCase.getCardFiltersData() } returns flow {
-                emit(
-                    infoFilterEntityMocked
-                )
-            }
-            viewModelMocked.getInfo()
-            assertThat(viewModelMocked.uiStateSuccess.value).isEqualTo(
-                InfoUiState.Success(
-                    InfoFilterEntity()
-                )
-            )
-            advanceUntilIdle()
-
-            coVerify { cardDataUseCase.getCardFiltersData() }
-            assertThat(viewModelMocked.uiStateSuccess.value).isEqualTo(
-                InfoUiState.Success(
-                    infoFilterEntityMocked
-                )
-            )
-        }
 }

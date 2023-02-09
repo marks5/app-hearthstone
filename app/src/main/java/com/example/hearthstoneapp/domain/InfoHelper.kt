@@ -1,4 +1,4 @@
-package com.example
+package com.example.hearthstoneapp.domain
 
 class InfoHelper private constructor() {
     var itemSelected: String = "Mage"
