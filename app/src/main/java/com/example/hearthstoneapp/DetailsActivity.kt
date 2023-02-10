@@ -1,6 +1,5 @@
 package com.example.hearthstoneapp
 
-import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -69,7 +68,7 @@ private fun DetailsScreen(viewModel: DetailsViewModel = get()) {
                 Column {
 
                     CustomFabButton(
-                        onClickFun = { goBack(context) },
+                        contextRef = (context as DetailsActivity),
                         modifierFab = Modifier
                             .padding(top = 64.dp, start = 24.dp)
                             .size(80.dp),
@@ -113,7 +112,7 @@ private fun DetailsScreen(viewModel: DetailsViewModel = get()) {
             } else {
                 Column {
                     CustomFabButton(
-                        onClickFun = { goBack(context) },
+                        contextRef = (context as DetailsActivity),
                         modifierFab = Modifier
                             .padding(top = 64.dp, start = 24.dp)
                             .size(80.dp),
@@ -142,8 +141,4 @@ private fun DetailsScreen(viewModel: DetailsViewModel = get()) {
         }
         else -> {}
     }
-}
-
-private fun goBack(context: Context) {
-    (context as DetailsActivity).finish()
 }

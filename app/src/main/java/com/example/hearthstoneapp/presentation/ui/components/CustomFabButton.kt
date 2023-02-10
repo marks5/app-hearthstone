@@ -1,5 +1,6 @@
 package com.example.hearthstoneapp.presentation.ui.components
 
+import android.app.Activity
 import androidx.compose.foundation.Image
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.runtime.Composable
@@ -9,14 +10,14 @@ import androidx.compose.ui.graphics.painter.Painter
 
 @Composable
 fun CustomFabButton(
-    onClickFun: () -> Unit,
+    contextRef: Activity,
     modifierFab: Modifier,
     backgroundFabColor: Color,
     painterImage: Painter,
     contentDescriptionImage: String
 ) {
     FloatingActionButton(
-        onClick = { onClickFun },
+        onClick = { contextRef.finish() },
         modifier = modifierFab,
         backgroundColor = backgroundFabColor,
     ) {
