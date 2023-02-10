@@ -1,41 +1,28 @@
 package com.example.hearthstoneapp.presentation.ui.components
 
-import android.content.Context
-import android.content.Intent
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
-import com.example.hearthstoneapp.R
-
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 
 @Composable
 fun CustomFabButton(
-    backgroundColor: Int,
-    drawable: Int,
-    intentClass: Class<*>,
-    context: Context
+    onClickFun: () -> Unit,
+    modifierFab: Modifier,
+    backgroundFabColor: Color,
+    painterImage: Painter,
+    contentDescriptionImage: String
 ) {
     FloatingActionButton(
-        onClick = { intent(context, intentClass) },
-        Modifier
-            .padding(top = 64.dp, start = 24.dp)
-            .size(80.dp),
-        backgroundColor = colorResource(id = backgroundColor),
+        onClick = { onClickFun },
+        modifier = modifierFab,
+        backgroundColor = backgroundFabColor,
     ) {
         Image(
-            painter = painterResource(id = drawable),
-            contentDescription = stringResource(id = R.string.accessibility_fab),
+            painter = painterImage,
+            contentDescription = contentDescriptionImage,
         )
     }
-}
-
-fun intent(mContext: Context, intentClass: Class<*>) {
-    mContext.startActivity(Intent(mContext, intentClass))
 }

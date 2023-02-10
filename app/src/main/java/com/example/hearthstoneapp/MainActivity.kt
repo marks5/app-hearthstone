@@ -1,6 +1,7 @@
 package com.example.hearthstoneapp
 
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -30,7 +31,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.hearthstoneapp.domain.InfoHelper
 import com.example.hearthstoneapp.presentation.UiState
-import com.example.hearthstoneapp.presentation.ui.components.intent
+import com.example.hearthstoneapp.presentation.ui.components.CustomHorizontalCard
+import com.example.hearthstoneapp.presentation.ui.components.randomColor
 import com.example.hearthstoneapp.presentation.ui.theme.HearthStoneAppTheme
 import com.example.hearthstoneapp.presentation.viewmodel.MainViewModel
 import org.koin.androidx.compose.get
@@ -173,6 +175,10 @@ private fun MainScreen(viewModel: MainViewModel = get()) {
         }
         else -> {}
     }
+}
+
+private fun intent(mContext: Context, intentClass: Class<*>) {
+    mContext.startActivity(Intent(mContext, intentClass))
 }
 
 private fun goToDetailsActivity(

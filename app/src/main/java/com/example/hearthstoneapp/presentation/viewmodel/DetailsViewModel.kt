@@ -25,8 +25,8 @@ class DetailsViewModel(
     val uiState: StateFlow<UiState<List<CardByFilterEntity>>> get() = _uiState
 
 
-    fun setItemName(itemName: String, FilterName: String) {
-        when (FilterName) {
+    fun setItemName(itemName: String, filterName: String) {
+        when (filterName) {
             FiltersName.CLASSES.valueType -> {
                 getClassesList(itemName)
             }

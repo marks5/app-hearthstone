@@ -1,6 +1,5 @@
-package com.example.hearthstoneapp
+package com.example.hearthstoneapp.presentation.ui.components
 
-import android.content.Context
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -11,31 +10,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
-import androidx.compose.ui.unit.sp
-import com.example.hearthstoneapp.domain.InfoHelper
-import com.example.hearthstoneapp.presentation.ui.components.intent
 import kotlin.random.Random
-
-//@Composable
-//fun CustomLazyRow(
-//    list: List<String>,
-//    keyValue: String,
-//    context: Context,
-//    color: Color,
-//    font: FontFamily
-//
-//) {
-//    LazyRow(
-//        horizontalArrangement = Arrangement.spacedBy(8.dp),
-//        content = {
-//            item {
-//                list.map {
-////                    CustomHorizontalCard()
-//                }
-//            }
-//        }
-//    )
-//}
 
 @Composable
 fun CustomHorizontalCard(

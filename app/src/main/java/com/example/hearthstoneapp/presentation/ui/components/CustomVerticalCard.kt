@@ -1,4 +1,4 @@
-package com.example.hearthstoneapp
+package com.example.hearthstoneapp.presentation.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.material.Card

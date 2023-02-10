@@ -1,14 +1,16 @@
 package com.example.hearthstoneapp
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
-import androidx.compose.material.*
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -27,9 +29,9 @@ import coil.compose.rememberAsyncImagePainter
 import com.example.hearthstoneapp.domain.InfoHelper
 import com.example.hearthstoneapp.presentation.UiState
 import com.example.hearthstoneapp.presentation.ui.components.CustomFabButton
+import com.example.hearthstoneapp.presentation.ui.components.CustomVerticalCard
 import com.example.hearthstoneapp.presentation.ui.theme.HearthStoneAppTheme
 import com.example.hearthstoneapp.presentation.viewmodel.DetailsViewModel
-//import com.example.hearthstoneapp.presentation.viewmodel.InfoUiState
 import org.koin.androidx.compose.get
 
 class DetailsActivity : ComponentActivity() {
@@ -52,10 +54,11 @@ class DetailsActivity : ComponentActivity() {
 @Composable
 private fun DetailsScreen(viewModel: DetailsViewModel = get()) {
     viewModel.setItemName(
-        FilterName = InfoHelper.getInstance().getItemKeyClicked(),
+        filterName = InfoHelper.getInstance().getItemKeyClicked(),
         itemName = InfoHelper.getInstance().getItemClicked()
     )
 
+    val context = LocalContext.current
     val state = viewModel.uiState.collectAsState()
 
     when (state.value) {
@@ -64,22 +67,16 @@ private fun DetailsScreen(viewModel: DetailsViewModel = get()) {
 
             if (cardListRaceResult.isNotEmpty()) {
                 Column {
-                    val context = LocalContext.current
 
-                    FloatingActionButton(
-                        onClick = {
-                            (context as DetailsActivity).finish()
-                        },
-                        Modifier
+                    CustomFabButton(
+                        onClickFun = { goBack(context) },
+                        modifierFab = Modifier
                             .padding(top = 64.dp, start = 24.dp)
                             .size(80.dp),
-                        backgroundColor = colorResource(id = R.color.dark_gunmetal),
-                    ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.ic_button_back),
-                            contentDescription = stringResource(id = R.string.accessibility_fab),
-                        )
-                    }
+                        backgroundFabColor = colorResource(id = R.color.dark_gunmetal),
+                        painterImage = painterResource(id = R.drawable.ic_button_back),
+                        contentDescriptionImage = stringResource(id = R.string.accessibility_fab)
+                    )
 
                     Text(
                         text = InfoHelper.getInstance().itemKeySelected,
@@ -116,10 +113,13 @@ private fun DetailsScreen(viewModel: DetailsViewModel = get()) {
             } else {
                 Column {
                     CustomFabButton(
-                        backgroundColor = R.color.dark_gunmetal,
-                        intentClass = MainActivity::class.java,
-                        context = LocalContext.current,
-                        drawable = R.drawable.ic_button_back
+                        onClickFun = { goBack(context) },
+                        modifierFab = Modifier
+                            .padding(top = 64.dp, start = 24.dp)
+                            .size(80.dp),
+                        backgroundFabColor = colorResource(id = R.color.dark_gunmetal),
+                        painterImage = painterResource(id = R.drawable.ic_button_back),
+                        contentDescriptionImage = stringResource(id = R.string.accessibility_fab)
                     )
 
                     Text(
@@ -142,4 +142,8 @@ private fun DetailsScreen(viewModel: DetailsViewModel = get()) {
         }
         else -> {}
     }
+}
+
+private fun goBack(context: Context) {
+    (context as DetailsActivity).finish()
 }
