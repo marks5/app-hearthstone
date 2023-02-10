@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.example.hearthstoneapp.domain.InfoHelper
+import com.example.hearthstoneapp.domain.model.CardByFilterEntity
 import com.example.hearthstoneapp.presentation.UiState
 import com.example.hearthstoneapp.presentation.ui.components.CustomFabButton
 import com.example.hearthstoneapp.presentation.ui.components.CustomVerticalCard
@@ -50,12 +51,11 @@ class DetailsActivity : ComponentActivity() {
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun DetailsScreen(viewModel: DetailsViewModel = get()) {
     viewModel.setItemName(
-        filterName = InfoHelper.getInstance().getItemKeyClicked(),
-        itemName = InfoHelper.getInstance().getItemClicked()
+        filterName = InfoHelper.getInstance().itemKeySelected,
+        itemName = InfoHelper.getInstance().itemSelected
     )
 
     val context = LocalContext.current
@@ -67,52 +67,11 @@ private fun DetailsScreen(viewModel: DetailsViewModel = get()) {
 
             if (cardListRaceResult.isNotEmpty()) {
                 Column {
-
-                    CustomFabButton(
-                        contextRef = (context as DetailsActivity),
-                        modifierFab = Modifier
-                            .padding(top = 64.dp, start = 24.dp)
-                            .size(80.dp),
-                        backgroundFabColor = colorResource(id = R.color.dark_gunmetal),
-                        modifierImage = Modifier.size(45.dp),
-                        painterImage = painterResource(id = R.drawable.ic_button_back),
-                        contentDescriptionImage = stringResource(id = R.string.accessibility_fab)
-                    )
-
-                    Text(
-                        text = InfoHelper.getInstance().itemKeySelected,
-                        color = colorResource(id = R.color.dark_gunmetal),
-                        fontSize = 22.sp,
-                        modifier = Modifier.padding(
-                            start = 280.dp,
-                            bottom = 8.dp,
-                        ),
-                        fontFamily = FontFamily(Font(R.font.avenir_400))
-                    )
-
-                    LazyVerticalGrid(
-                        cells = GridCells.Fixed(2)
-                    ) {
-                        cardListRaceResult.map {
-                            it.img?.let {
-                                item {
-                                    CustomVerticalCard(
-                                        Modifier
-                                            .fillMaxSize()
-                                            .height(224.dp)
-                                            .width(189.dp)
-                                            .padding(8.dp),
-                                        rememberAsyncImagePainter(it),
-                                        stringResource(id = R.string.accessibility_item_image),
-                                        ContentScale.Fit
-                                    )
-                                }
-                            }
-                        }
-                    }
+                    CustomDetailsHeader(context, InfoHelper.getInstance().itemKeySelected)
+                    CustomLazyVerticalGrid(cardListRaceResult)
                 }
             } else {
-                CustomHeader(context, stringResource(id = R.string.placeholder_text))
+                CustomDetailsHeader(context, stringResource(id = R.string.placeholder_text))
             }
         }
 
@@ -123,16 +82,43 @@ private fun DetailsScreen(viewModel: DetailsViewModel = get()) {
             )
         }
         is UiState.Error -> {
-            CustomHeader(context, stringResource(id = R.string.placeholder_text))
+            CustomDetailsHeader(context, stringResource(id = R.string.placeholder_text))
+        }
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+private fun CustomLazyVerticalGrid(cardListRaceResult: List<CardByFilterEntity>) {
+    LazyVerticalGrid(
+        cells = GridCells.Fixed(2),
+        Modifier.padding(top = 20.dp)
+    ) {
+        cardListRaceResult.map {
+            it.img?.let {
+                item {
+                    CustomVerticalCard(
+                        Modifier
+                            .height(224.dp)
+                            .width(189.dp)
+                            .padding(8.dp),
+                        rememberAsyncImagePainter(it),
+                        stringResource(id = R.string.accessibility_item_image),
+                        ContentScale.Fit
+                    )
+                }
+            }
         }
     }
 }
 
 @Composable
-private fun CustomHeader(context: Context, headerText: String) {
+private fun CustomDetailsHeader(
+    context: Context,
+    headerText: String,
+) {
     Box(
         modifier = Modifier
-            .fillMaxSize()
             .padding(top = 90.dp, start = 24.dp, end = 24.dp),
         contentAlignment = Alignment.TopStart,
     ) {

@@ -81,86 +81,8 @@ private fun MainScreen(viewModel: MainViewModel = get()) {
                             .padding(top = 90.dp, start = 24.dp)
                     ) {
                         Column {
-                            Text(
-                                text = stringResource(id = R.string.title_home),
-                                color = colorResource(id = R.color.dark_gunmetal),
-                                fontSize = 40.sp,
-                                modifier = Modifier.padding(bottom = 8.dp),
-                                fontFamily = FontFamily(Font(R.font.avenir_900))
-                            )
-                            Divider(startIndent = 8.dp, thickness = 1.dp, color = Color.White)
-
-                            Box {
-                                val context = LocalContext.current
-                                LazyColumn(
-                                    contentPadding = PaddingValues(
-                                        horizontal = 8.dp,
-                                        vertical = 8.dp
-                                    ),
-                                    verticalArrangement = Arrangement.SpaceEvenly,
-                                    content = {
-
-                                        viewModel.getCardInfoList().forEach { (key, values) ->
-                                            item {
-                                                Text(
-                                                    modifier = Modifier
-                                                        .padding(
-                                                            top = 24.dp
-                                                        ),
-                                                    color = Color(R.color.dark_silver),
-                                                    fontSize = 16.sp,
-                                                    text = key,
-                                                    fontFamily = FontFamily(Font(R.font.avenir_400))
-                                                )
-                                            }
-
-                                            item {
-                                                LazyRow(
-                                                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                                                    content = {
-                                                        item {
-                                                            values.map {
-                                                                CustomHorizontalCard(
-                                                                    text = it,
-                                                                    font = FontFamily(Font(R.font.avenir_400)),
-                                                                    modifierText = Modifier.padding(
-                                                                        4.dp
-                                                                    ),
-                                                                    colorCard = randomColor(),
-                                                                    colorText = colorResource(id = R.color.white),
-                                                                    fontSizeText = 18.sp,
-                                                                    textAlign = TextAlign.Left,
-                                                                    shapeSize = RoundedCornerShape(
-                                                                        16.dp
-                                                                    ),
-                                                                    modifierColumn = Modifier.padding(
-                                                                        top = 50.dp,
-                                                                        start = 10.dp
-                                                                    ),
-                                                                    modifierCard = Modifier
-                                                                        .padding(
-                                                                            start = 16.dp,
-                                                                            top = 10.dp
-                                                                        )
-                                                                        .width(144.dp)
-                                                                        .height(104.dp)
-                                                                        .clickable {
-                                                                            goToDetailsActivity(
-                                                                                context,
-                                                                                it,
-                                                                                key
-                                                                            )
-                                                                        }
-                                                                )
-                                                            }
-                                                        }
-                                                    }
-                                                )
-                                            }
-                                        }
-                                    }
-                                )
-                            }
+                            CustomMainHeader()
+                            CustomFiltersList(viewModel)
                         }
                     }
                 }
@@ -189,6 +111,102 @@ private fun MainScreen(viewModel: MainViewModel = get()) {
         }
         else -> {}
     }
+}
+
+@Composable
+private fun CustomFiltersList(viewModel: MainViewModel) {
+    Box {
+        val context = LocalContext.current
+        LazyColumn(
+            contentPadding = PaddingValues(
+                horizontal = 8.dp,
+                vertical = 8.dp
+            ),
+            verticalArrangement = Arrangement.SpaceEvenly,
+            content = {
+
+                viewModel.getCardInfoList().forEach { (key, values) ->
+                    item {
+                        Text(
+                            modifier = Modifier
+                                .padding(
+                                    top = 24.dp
+                                ),
+                            color = Color(R.color.dark_silver),
+                            fontSize = 16.sp,
+                            text = key,
+                            fontFamily = FontFamily(Font(R.font.avenir_400))
+                        )
+                    }
+
+                    item {
+                        LazyRow(
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            content = {
+                                item {
+                                    values.map {
+                                        CustomItemFilterCard(it, context, key)
+                                    }
+                                }
+                            }
+                        )
+                    }
+                }
+            }
+        )
+    }
+}
+
+@Composable
+private fun CustomItemFilterCard(
+    it: String,
+    context: Context,
+    key: String
+) {
+    CustomHorizontalCard(
+        text = it,
+        font = FontFamily(Font(R.font.avenir_400)),
+        modifierText = Modifier.padding(
+            4.dp
+        ),
+        colorCard = randomColor(),
+        colorText = colorResource(id = R.color.white),
+        fontSizeText = 18.sp,
+        textAlign = TextAlign.Left,
+        shapeSize = RoundedCornerShape(
+            16.dp
+        ),
+        modifierColumn = Modifier.padding(
+            top = 50.dp,
+            start = 10.dp
+        ),
+        modifierCard = Modifier
+            .padding(
+                start = 16.dp,
+                top = 10.dp
+            )
+            .width(144.dp)
+            .height(104.dp)
+            .clickable {
+                goToDetailsActivity(
+                    context,
+                    it,
+                    key
+                )
+            }
+    )
+}
+
+@Composable
+private fun CustomMainHeader() {
+    Text(
+        text = stringResource(id = R.string.title_home),
+        color = colorResource(id = R.color.dark_gunmetal),
+        fontSize = 40.sp,
+        modifier = Modifier.padding(bottom = 8.dp),
+        fontFamily = FontFamily(Font(R.font.avenir_900))
+    )
+    Divider(startIndent = 8.dp, thickness = 1.dp, color = Color.White)
 }
 
 private fun intent(mContext: Context, intentClass: Class<*>) {
