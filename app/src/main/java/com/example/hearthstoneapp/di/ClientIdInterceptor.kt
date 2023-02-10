@@ -1,5 +1,7 @@
 package com.example.hearthstoneapp.di
 
+import com.example.hearthstoneapp.presentation.utils.Constants.HEADER_NAME
+import com.example.hearthstoneapp.presentation.utils.Constants.HEADER_VALUE
 import okhttp3.Interceptor
 import okhttp3.Response
 
@@ -8,7 +10,7 @@ class ClientIdInterceptor : Interceptor {
         val originalRequest = chain.request()
 
         val newRequest = originalRequest.newBuilder()
-            .addHeader("X-RapidAPI-Key", "88943bb5e0mshe4b3937c0f6f3a8p1b9321jsn5f5ae4c330ea")
+            .addHeader(HEADER_NAME, HEADER_VALUE)
             .build()
 
         return chain.proceed(newRequest)
