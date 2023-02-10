@@ -173,6 +173,20 @@ private fun MainScreen(viewModel: MainViewModel = get()) {
                     .wrapContentSize(align = Alignment.Center)
             )
         }
+
+        is UiState.Error -> {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = stringResource(id = R.string.placeholder_text),
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                )
+            }
+        }
         else -> {}
     }
 }
