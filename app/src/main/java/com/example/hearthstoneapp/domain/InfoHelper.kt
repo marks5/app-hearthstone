@@ -18,15 +18,7 @@ class InfoHelper private constructor() {
         this.itemSelected = itemSelected
     }
 
-//    fun getItemClicked(): String {
-//        return itemSelected
-//    }
-
     fun setItemKeyClicked(itemKeySelected: String) {
         this.itemKeySelected = itemKeySelected
     }
-
-//    fun getItemKeyClicked(): String {
-//        return itemKeySelected
-//    }
 }

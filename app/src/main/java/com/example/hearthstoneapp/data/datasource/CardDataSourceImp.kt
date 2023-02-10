@@ -3,9 +3,7 @@ package com.example.hearthstoneapp.data.datasource
 import com.example.hearthstoneapp.data.CardService
 import com.example.hearthstoneapp.domain.model.CardByFilterEntity
 import com.example.hearthstoneapp.domain.model.InfoFilterEntity
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.FlowCollector
-import kotlinx.coroutines.flow.flow
+import com.example.hearthstoneapp.presentation.utils.call
 
 class CardDataSourceImp(private val service: CardService) : CardDataSource {
     override fun fetchCardFiltersData() = call<InfoFilterEntity> {
@@ -35,8 +33,4 @@ class CardDataSourceImp(private val service: CardService) : CardDataSource {
     override fun fetchTypesFiltersData(typesName: String) = call<List<CardByFilterEntity>> {
         service.fetchTypesFiltersData(typesName)
     }
-}
-
-fun <T> call(block: suspend FlowCollector<T>.() -> T): Flow<T> = flow {
-    emit(block())
 }
