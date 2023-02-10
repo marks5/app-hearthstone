@@ -1,5 +1,6 @@
 package com.example.hearthstoneapp
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -73,6 +74,7 @@ private fun DetailsScreen(viewModel: DetailsViewModel = get()) {
                             .padding(top = 64.dp, start = 24.dp)
                             .size(80.dp),
                         backgroundFabColor = colorResource(id = R.color.dark_gunmetal),
+                        modifierImage = Modifier.size(45.dp),
                         painterImage = painterResource(id = R.drawable.ic_button_back),
                         contentDescriptionImage = stringResource(id = R.string.accessibility_fab)
                     )
@@ -110,26 +112,7 @@ private fun DetailsScreen(viewModel: DetailsViewModel = get()) {
                     }
                 }
             } else {
-                Column {
-                    CustomFabButton(
-                        contextRef = (context as DetailsActivity),
-                        modifierFab = Modifier
-                            .padding(top = 64.dp, start = 24.dp)
-                            .size(80.dp),
-                        backgroundFabColor = colorResource(id = R.color.dark_gunmetal),
-                        painterImage = painterResource(id = R.drawable.ic_button_back),
-                        contentDescriptionImage = stringResource(id = R.string.accessibility_fab)
-                    )
-
-                    Text(
-                        text = stringResource(id = R.string.placeholder_text),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(50.dp)
-                            .width(100.dp),
-                        textAlign = TextAlign.Center
-                    )
-                }
+                CustomHeader(context, stringResource(id = R.string.placeholder_text))
             }
         }
 
@@ -139,6 +122,40 @@ private fun DetailsScreen(viewModel: DetailsViewModel = get()) {
                     .wrapContentSize(align = Alignment.Center)
             )
         }
-        else -> {}
+        is UiState.Error -> {
+            CustomHeader(context, stringResource(id = R.string.placeholder_text))
+        }
+    }
+}
+
+@Composable
+private fun CustomHeader(context: Context, headerText: String) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 90.dp, start = 24.dp, end = 24.dp),
+        contentAlignment = Alignment.TopStart,
+    ) {
+
+        CustomFabButton(
+            contextRef = (context as DetailsActivity),
+            modifierFab = Modifier
+                .size(80.dp),
+            backgroundFabColor = colorResource(id = R.color.dark_gunmetal),
+            modifierImage = Modifier.size(45.dp),
+            painterImage = painterResource(id = R.drawable.ic_button_back),
+            contentDescriptionImage = stringResource(id = R.string.accessibility_fab)
+        )
+
+        Text(
+            text = headerText,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(end = 8.dp, top = 24.dp),
+            textAlign = TextAlign.End,
+            fontFamily = FontFamily(Font(R.font.avenir_400)),
+            color = colorResource(id = R.color.dark_gunmetal),
+            fontSize = 22.sp,
+        )
     }
 }
